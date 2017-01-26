@@ -1,0 +1,21 @@
+{
+    "name": "spameri/movie-parser",
+    "authors": [
+        {
+            "name": "VBoss",
+            "email": "vcevela@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.1",
+        "atrox/matcher": "^1.0"
+    },
+    "require-dev": {
+        "nette/tester": "^1.7"
+    },
+    "autoload": {
+        "psr-0": {
+            "MovieParser\\": "src/"
+        }
+    }
+}
