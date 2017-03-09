@@ -2,7 +2,7 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Release
+class Release extends Dto
 {
 	/** @var string */
 	private $country;

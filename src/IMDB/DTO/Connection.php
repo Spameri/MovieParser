@@ -3,7 +3,7 @@
 namespace MovieParser\IMDB\DTO;
 
 
-class Connection
+class Connection extends Dto
 {
 	/** @var string */
 	private $connection;

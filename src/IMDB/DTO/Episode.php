@@ -2,7 +2,7 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Episode
+class Episode extends Dto
 {
 	/** @var int */
 	private $id;

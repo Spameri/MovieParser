@@ -2,30 +2,11 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Character
+class Character extends Dto
 {
-	/** @var int */
-	private $id;
 	/** @var string */
 	private $name;
 
-
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-
-
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
 
 
 	/**

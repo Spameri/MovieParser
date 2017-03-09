@@ -2,7 +2,7 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Credit
+class Credit extends Dto
 {
 	/** @var Company */
 	private $company;

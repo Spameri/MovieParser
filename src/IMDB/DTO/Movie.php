@@ -2,10 +2,8 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Movie
+class Movie extends Dto
 {
-	/** @var int */
-	private $id;
 	/** @var string */
 	private $title;
 	/** @var int */
@@ -68,6 +66,8 @@ class Movie
 	private $connections;
 	/** @var array */
 	private $images;
+	/** @var array */
+	private $links;
 
 
 	public function __construct($data)
@@ -80,6 +80,7 @@ class Movie
 		if (isset($data['poster'])) $this->setPoster($data['poster']);
 		if (isset($data['description'])) $this->setDescription($data['description']);
 		if (isset($data['genres'])) $this->setGenres($data['genres']);
+		if (isset($data['links'])) $this->setLinks($data['links']);
 	}
 
 
@@ -111,6 +112,15 @@ class Movie
 
 
 	/**
+	 * @return array
+	 */
+	public function getRelease()
+	{
+		return $this->release;
+	}
+
+
+	/**
 	 * @param Alias $alias
 	 */
 	public function addAlias($alias)
@@ -120,20 +130,11 @@ class Movie
 
 
 	/**
-	 * @return int
+	 * @return array
 	 */
-	public function getId()
+	public function getAlias()
 	{
-		return $this->id;
-	}
-
-
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
+		return $this->alias;
 	}
 
 
@@ -638,5 +639,41 @@ class Movie
 	public function setImages($images)
 	{
 		$this->images = $images;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getCredits() : array
+	{
+		return $this->credits;
+	}
+
+
+	/**
+	 * @param array $credits
+	 */
+	public function setCredits(array $credits)
+	{
+		$this->credits = $credits;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getLinks() : array
+	{
+		return $this->links;
+	}
+
+
+	/**
+	 * @param array $links
+	 */
+	public function setLinks(array $links)
+	{
+		$this->links = $links;
 	}
 }

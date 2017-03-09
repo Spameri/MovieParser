@@ -3,10 +3,8 @@
 namespace MovieParser\IMDB\DTO;
 
 
-class Company
+class Company extends Dto
 {
-	/** @var string */
-	private $id;
 	/** @var string */
 	private $name;
 
@@ -15,24 +13,6 @@ class Company
 	{
 		if (isset($data['id'])) $this->setId($data['id']);
 		if (isset($data['name'])) $this->setName($data['name']);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-
-
-	/**
-	 * @param string $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
 	}
 
 

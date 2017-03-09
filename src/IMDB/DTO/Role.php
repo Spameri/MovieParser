@@ -3,7 +3,7 @@
 namespace MovieParser\IMDB\DTO;
 
 
-class Role
+class Role extends Dto
 {
 	/** @var Person */
 	private $person;

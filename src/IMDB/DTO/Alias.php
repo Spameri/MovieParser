@@ -2,7 +2,7 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Alias
+class Alias extends Dto
 {
 	/** @var string */
 	private $country;

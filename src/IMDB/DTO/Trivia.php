@@ -2,11 +2,8 @@
 
 namespace MovieParser\IMDB\DTO;
 
-class Trivia
+class Trivia extends Dto
 {
-
-	/** @var string */
-	private $id;
 	/** @var string */
 	private $video;
 	/** @var string */
@@ -66,23 +63,5 @@ class Trivia
 	public function setVideo($video)
 	{
 		$this->video = $video;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-
-
-	/**
-	 * @param string $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
 	}
 }
