@@ -12,7 +12,7 @@ class MovieParserExtension extends \Nette\DI\CompilerExtension
 
 		$builder = $this->getContainerBuilder();
 
-		$this->compiler->parseServices($builder, $this->loadFromFile(__DIR__ . '/config.neon.neon'), $this->name);
+		$this->compiler->parseServices($builder, $this->loadFromFile(__DIR__ . '/config.neon'), $this->name);
 	}
 
 
