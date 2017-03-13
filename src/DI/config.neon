@@ -7,7 +7,6 @@ services:
 	- MovieParser\IMDB\Matcher\ProcessBusiness
 	- MovieParser\IMDB\Matcher\ProcessCompanyCredits
 	- MovieParser\IMDB\Matcher\ProcessConnections
-	- MovieParser\IMDB\Matcher\ProcessCompanyCredits
 	- MovieParser\IMDB\Matcher\ProcessCrazyCredits
 	- MovieParser\IMDB\Matcher\ProcessFullCredits
 	- MovieParser\IMDB\Matcher\ProcessGoofs
