@@ -2,46 +2,31 @@
 
 namespace Tests\MovieParser\IMDB\Parser;
 
-use Tester;
-use MovieParser;
-use Atrox;
-
-
 include __DIR__ . '/../../../Bootstrap.php';
-include __DIR__ . '/../../../../src/IMDB/Matcher.php';
+include __DIR__ . '/../../../../src/IMDB/Matcher/ProcessKeywords.php';
 include __DIR__ . '/../../../../src/IMDB/UrlBuilder.php';
+include __DIR__ . '/../../../../src/IMDB/DTO/Dto.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Movie.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Role.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Person.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Character.php';
 
 
-class ProcessKeyWords extends Tester\TestCase
+class ProcessKeyWords extends \Tester\TestCase
 {
-
-	protected function setUp()
-	{
-		parent::setUp();
-	}
-
 
 	public function testProcessMovie()
 	{
-		$matcher = new MovieParser\IMDB\Matcher(new MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessKeywords(new \MovieParser\IMDB\UrlBuilder());
 
 		$html = file_get_contents(__DIR__ . '/AntMan-keyWords.html');
 
-		$data = $matcher->processKeywords($html);
+		$data = $matcher->process($html);
 
-		var_dump($data);
+		\Tester\Assert::same($data['id'], 'tt0478970');
+		\Tester\Assert::count(127, $data['keywords']);
+		\Tester\Assert::same('sabotage', $data['keywords'][0]);
 	}
-
-
-	protected function tearDown()
-	{
-		parent::tearDown();
-	}
-
 }
 
 

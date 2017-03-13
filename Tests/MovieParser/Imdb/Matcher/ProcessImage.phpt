@@ -2,47 +2,32 @@
 
 namespace Tests\MovieParser\IMDB\Parser;
 
-use Tester;
-use MovieParser;
-use Atrox;
-
 
 include __DIR__ . '/../../../Bootstrap.php';
-include __DIR__ . '/../../../../src/IMDB/Matcher.php';
+include __DIR__ . '/../../../../src/IMDB/Matcher/ProcessImage.php';
 include __DIR__ . '/../../../../src/IMDB/UrlBuilder.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Dto.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Movie.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Image.php';
 
 
-class ProcessImage extends Tester\TestCase
+class ProcessImage extends \Tester\TestCase
 {
-
-	protected function setUp()
-	{
-		parent::setUp();
-	}
-
 
 	public function testProcessMovie()
 	{
-		$matcher = new MovieParser\IMDB\Matcher(new MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessImage(new \MovieParser\IMDB\UrlBuilder());
 
 		$html = file_get_contents(__DIR__ . '/AntMan-image.html');
 
-		$data = $matcher->processImage($html);
+		$data = $matcher->process($html);
 
-		$jsonDecode = json_decode($data['image']);
+		$jsonDecode = json_decode($data['imageData']);
 
-		var_dump($jsonDecode);
+		\Tester\Assert::same($data['id'], 'tt0478970');
+		\Tester\Assert::type('object', $jsonDecode);
+		\Tester\Assert::count(242, $jsonDecode->mediaViewerModel->allImages);
 	}
-
-
-	protected function tearDown()
-	{
-		parent::tearDown();
-	}
-
 }
 
 

@@ -10,12 +10,14 @@ class UrlBuilder
 
 	const URL_IMDB = 'http://www.imdb.com/';
 	const URL_TYPE_TITLE = 'title';
+	const URL_TYPE_VIDEO = 'video/imdb';
 	const URL_TYPE_PERSON = 'name';
 	const URL_TYPE_CHARACTER = 'character';
 
 	const TYPE_TITLE = 'tt';
 	const TYPE_PERSON = 'nm';
 	const TYPE_CHARACTER = 'ch';
+	const TYPE_VIDEO = 'vi';
 
 
 	const URL_FULL_CREDITS = 'fullcredits';
@@ -42,7 +44,9 @@ class UrlBuilder
 	const URL_SOUNDTRACK = 'soundtrack';
 
 	const URL_MEDIA_INDEX = 'mediaindex';
+	const URL_MEDIA_VIEWER = 'mediaviewer';
 	const URL_VIDEO_GALLERY = 'videogallery';
+	const URL_VIDEO = 'video';
 
 	const URL_AWARDS = 'awards';
 	const URL_FAQ = 'faq';
@@ -81,11 +85,14 @@ class UrlBuilder
 		self::URL_RATINGS,
 		self::URL_EXTERNAL_REVIEWS,
 		self::URL_TV_SCHEDULE,
+		self::URL_VIDEO,
 	];
+
 
 	/**
 	 * @param string $input
 	 * @return string
+	 * @throws \MovieParser\IMDB\Exception\IncompleteId
 	 */
 	public function buildUrl($input)
 	{
@@ -99,11 +106,14 @@ class UrlBuilder
 		} elseif ($type === self::TYPE_CHARACTER) {
 			$url .= self::URL_TYPE_CHARACTER . '/';
 
+		} elseif ($type === self::TYPE_VIDEO) {
+			$url .= self::URL_TYPE_VIDEO . '/';
+
 		} else {
 			$url .= self::URL_TYPE_TITLE . '/';
 		}
 
-		$url .= $type . $id;
+		$url .= $type . $id . '/';
 
 		return $url;
 	}
@@ -124,6 +134,9 @@ class UrlBuilder
 		} elseif (strpos($input, self::TYPE_CHARACTER)) {
 			$type = self::TYPE_CHARACTER;
 
+		} elseif (strpos($input, self::TYPE_VIDEO)) {
+			$type = self::TYPE_VIDEO;
+
 		} else {
 			$type = self::TYPE_TITLE;
 		}
@@ -139,7 +152,7 @@ class UrlBuilder
 	 */
 	public function getId($input)
 	{
-		preg_match("/[0-9]+/", $input, $output);
+		preg_match('/\d+/', $input, $output);
 
 		if ( ! isset($output[0])) {
 			throw new MovieParser\IMDB\Exception\IncompleteId;

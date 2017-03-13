@@ -18,6 +18,12 @@ class Movie extends Dto
 	private $description;
 	/** @var array */
 	private $genres;
+	/** @var string */
+	private $show;
+	/** @var int */
+	private $season;
+	/** @var int */
+	private $episode;
 	/** @var array */
 	private $people;
 	/** @var array */
@@ -68,6 +74,20 @@ class Movie extends Dto
 	private $images;
 	/** @var array */
 	private $links;
+	/**
+	 * @var array
+	 */
+	private $alternativeVersions;
+
+	/**
+	 * @var array
+	 */
+	private $awards;
+
+	/**
+	 * @var array
+	 */
+	private $videos;
 
 
 	public function __construct($data)
@@ -75,12 +95,24 @@ class Movie extends Dto
 		if (isset($data['id'])) $this->setId($data['id']);
 		if (isset($data['title'])) $this->setTitle($data['title']);
 		if (isset($data['year'])) $this->setYear((int) $data['year']);
-		if (isset($data['rating'])) $this->setRating(((int) str_replace('.', '', $data['rating'])));
+		if (isset($data['rating'])) $this->setRating((int) str_replace('.', '', $data['rating']));
 		if (isset($data['ratingCount'])) $this->setRatingCount((int) str_replace(',', '', $data['ratingCount']));
 		if (isset($data['poster'])) $this->setPoster($data['poster']);
 		if (isset($data['description'])) $this->setDescription($data['description']);
 		if (isset($data['genres'])) $this->setGenres($data['genres']);
 		if (isset($data['links'])) $this->setLinks($data['links']);
+		if (isset($data['show'])) {
+			preg_match('/\d+/', $data['show'], $output);
+			$this->setShow($output[0]);
+		}
+		if (isset($data['season'])) {
+			preg_match('/\d+/', $data['season'], $output);
+			$this->setSeason($output[0]);
+		}
+		if (isset($data['episode'])) {
+			preg_match('/\d+/', $data['episode'], $output);
+			$this->setEpisode($output[0]);
+		}
 	}
 
 
@@ -675,5 +707,113 @@ class Movie extends Dto
 	public function setLinks(array $links)
 	{
 		$this->links = $links;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getAlternativeVersions() : array
+	{
+		return $this->alternativeVersions;
+	}
+
+
+	/**
+	 * @param array $alternativeVersions
+	 */
+	public function setAlternativeVersions(array $alternativeVersions)
+	{
+		$this->alternativeVersions = $alternativeVersions;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getAwards() : array
+	{
+		return $this->awards;
+	}
+
+
+	/**
+	 * @param array $awards
+	 */
+	public function setAwards(array $awards)
+	{
+		$this->awards = $awards;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getVideos() : array
+	{
+		return $this->videos;
+	}
+
+
+	/**
+	 * @param array $videos
+	 */
+	public function setVideos(array $videos)
+	{
+		$this->videos = $videos;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getShow() : string
+	{
+		return $this->show;
+	}
+
+
+	/**
+	 * @param string $show
+	 */
+	public function setShow(string $show)
+	{
+		$this->show = $show;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getSeason() : int
+	{
+		return $this->season;
+	}
+
+
+	/**
+	 * @param int $season
+	 */
+	public function setSeason(int $season)
+	{
+		$this->season = $season;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getEpisode() : int
+	{
+		return $this->episode;
+	}
+
+
+	/**
+	 * @param int $episode
+	 */
+	public function setEpisode(int $episode)
+	{
+		$this->episode = $episode;
 	}
 }

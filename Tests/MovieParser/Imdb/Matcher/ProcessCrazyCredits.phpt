@@ -2,44 +2,31 @@
 
 namespace Tests\MovieParser\IMDB\Parser;
 
-use Tester;
-use MovieParser;
-use Atrox;
-
 
 include __DIR__ . '/../../../Bootstrap.php';
-include __DIR__ . '/../../../../src/IMDB/Matcher.php';
+include __DIR__ . '/../../../../src/IMDB/Matcher/ProcessCrazyCredits.php';
 include __DIR__ . '/../../../../src/IMDB/UrlBuilder.php';
+include __DIR__ . '/../../../../src/IMDB/DTO/Dto.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/Movie.php';
 include __DIR__ . '/../../../../src/IMDB/DTO/CrazyCredit.php';
 
 
-class ProcessCrazyCredit extends Tester\TestCase
+class ProcessCrazyCredit extends \Tester\TestCase
 {
-
-	protected function setUp()
-	{
-		parent::setUp();
-	}
-
 
 	public function testProcessMovie()
 	{
-		$matcher = new MovieParser\IMDB\Matcher(new MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessCrazyCredits(new \MovieParser\IMDB\UrlBuilder());
 
 		$html = file_get_contents(__DIR__ . '/AntMan-crazyCredits.html');
 
-		$data = $matcher->processCrazyCredits($html);
+		$data = $matcher->process($html);
 
-		var_dump($data);
+		\Tester\Assert::same($data['id'], 'tt0478970');
+		\Tester\Assert::count(4, $data['credits']);
+		\Tester\Assert::count(3, $data['credits'][0]);
+		\Tester\Assert::same($data['credits'][0]['id'], 'cz0033005');
 	}
-
-
-	protected function tearDown()
-	{
-		parent::tearDown();
-	}
-
 }
 
 

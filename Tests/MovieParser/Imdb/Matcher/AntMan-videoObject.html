@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">var ue_t0 = window.ue_t0 || +new Date();</script>
+	<script type="text/javascript">
+		var ue_mid = "A1EVAM02EL8SFB";
+		var ue_sn = "www.imdb.com";
+		var ue_furl = "fls-na.amazon.com";
+		var ue_sid = "790-9991164-6940049";
+		var ue_id = "1YRAQR5V02SC4AG59X9G";
+		(function (e) {
+			var c = e;
+			var a = c.ue || {};
+			a.main_scope = "mainscopecsm";
+			a.q = [];
+			a.t0 = c.ue_t0 || +new Date();
+			a.d = g;
+			function g(h) {
+				return +new Date() - (h ? 0 : a.t0)
+			}
+
+			function d(h) {
+				return function () {
+					a.q.push({n: h, a: arguments, t: a.d()})
+				}
+			}
+
+			function b(m, l, h, j, i) {
+				var k = {m: m, f: l, l: h, c: "" + j, err: i, fromOnError: 1, args: arguments};
+				c.ueLogError(k);
+				return false
+			}
+
+			b.skipTrace = 1;
+			e.onerror = b;
+			function f() {
+				c.uex("ld")
+			}
+
+			if (e.addEventListener) {
+				e.addEventListener("load", f, false)
+			} else {
+				if (e.attachEvent) {
+					e.attachEvent("onload", f)
+				}
+			}
+			a.tag = d("tag");
+			a.log = d("log");
+			a.reset = d("rst");
+			c.ue_csm = c;
+			c.ue = a;
+			c.ueLogError = d("err");
+			c.ues = d("ues");
+			c.uet = d("uet");
+			c.uex = d("uex");
+			c.uet("ue")
+		})(window);
+		(function (e, d) {
+			var a = e.ue || {};
+
+			function c(g) {
+				if (!g) {
+					return
+				}
+				var f = d.head || d.getElementsByTagName("head")[0] || d.documentElement, h = d.createElement("script");
+				h.async = "async";
+				h.src = g;
+				f.insertBefore(h, f.firstChild)
+			}
+
+			function b() {
+				var k = e.ue_cdn || "z-ecx.images-amazon.com", g = e.ue_cdns || "images-na.ssl-images-amazon.com", j = "/images/G/01/csminstrumentation/", h = e.ue_file || "ue-full-11e51f253e8ad9d145f4ed644b40f692._V1_.js", f, i;
+				if (h.indexOf("NSTRUMENTATION_FIL") >= 0) {
+					return
+				}
+				if ("ue_https" in e) {
+					f = e.ue_https
+				} else {
+					f = e.location && e.location.protocol == "https:" ? 1 : 0
+				}
+				i = f ? "https://" : "http://";
+				i += f ? g : k;
+				i += j;
+				i += h;
+				c(i)
+			}
+
+			if (!e.ue_inline) {
+				if (a.loadUEFull) {
+					a.loadUEFull()
+				} else {
+					b()
+				}
+			}
+			a.uels = c;
+			e.ue = a
+		})(window, document);
+		if (!('CS' in window)) {
+			window.CS = {};
+		}
+		window.CS.loginLocation = "https://www.imdb.com/registration/signin?u=%2Fvideo%2Fimdb%2Fvi3109793817%2Fimdb%2Fsingle%3FvPage%3D1";
+	</script>
+	<link rel="stylesheet" type="text/css"
+		  href="http://ia.media-imdb.com/images/G/01/imdb/css/collections/video-player-widget-940518507._CB531876203_.css"/>
+	<meta property="og:video"
+		  content="http://www.imdb.com/video/IMDB/vi3109793817/imdb/embed?autoplay=false&width=854"/>
+	<meta property="og:url" content="http://www.imdb.com/video/IMDB/vi3109793817/imdb/embed?autoplay=false&width=854"/>
+	<meta property="og:title" content="Youre Like A Bullet"/>
+	<meta property="og:site_name" content="IMDb">
+	<meta property="fb:app_id" content="115109575169727"/>
+	<meta property="og:image"
+		  content="https://images-na.ssl-images-amazon.com/images/M/MV5BMTY2OTgwNTczMF5BMl5BanBnXkFtZTgwNDk2OTQxNjE@._V1_.jpg">
+	<meta property="og:video:type" content="application/x-shockwave-flash">
+	<meta property="og:type" content="video"/>
+	<meta property="og:video:width" content="854"/>
+</head>
+
+<body id="imdb-player"
+
+	  class="available">
+<!-- begin video ads header -->
+<script src="https://ia.media-imdb.com/images/G/01/imdbads/js/collections/ads-video-2270261669._CB535308146_.js"></script>
+<script id="ads_doWithAds">
+	doWithAds = function (inside, failureMessage) {
+		if ('consoleLog' in window &&
+			'generic' in window &&
+			'ad_utils' in window &&
+			'custom' in window &&
+			'monitoring' in generic &&
+			'document_is_ready' in generic) {
+			try {
+				inside.call(this);
+			} catch (e) {
+				if (window.ueLogError) {
+					if (typeof failureMessage !== 'undefined') {
+						e.message = failureMessage;
+					}
+					e.attribution = "Advertising";
+					e.logLevel = "ERROR";
+					ueLogError(e);
+				}
+				if ((document.location.hash.match('debug=1')) &&
+					(typeof failureMessage !== 'undefined')) {
+					console.error(failureMessage);
+				}
+			}
+		} else {
+			if ((document.location.hash.match('debug=1')) &&
+				(typeof failureMessage !== 'undefined')) {
+				console.error(failureMessage);
+			}
+		}
+	};
+</script>
+<script id="ads_monitoring_setup">
+	doWithAds(function () {
+		generic.monitoring.set_forester_info("video");
+		generic.monitoring.set_twilight_info(
+			"video",
+			"CZ",
+			"ff9f9bfda05d085b26d29ffa5b7256f81120d382",
+			"2017-03-11T12%3A19%3A04GMT",
+			"https://s.media-imdb.com/twilight/?",
+			"consumer");
+		generic.monitoring.start_timing("page_load");
+		generic.seconds_to_midnight = 70856;
+		generic.days_to_midnight = 0.8200926184654236;
+	}, "Generic not defined, skipping monitoring setup.");
+</script>
+<!-- end video ads header -->
+
+
+<div class="video-player-frame">
+	<div class="video-player vp-full">
+		<script class="imdb-player-data" type="text/imdb-video-player-json">
+    {
+        "adObject": {"airyAdConfig":{"adLoadTimeoutMillis":3000,"adType":"pre-roll","adUnwrapTimeoutMillis":3000,"skipAd":true,"skipAdAfterSeconds":5,"skipAdLongerThanSeconds":20},"listindex": null},
+        "videoPlayerObject" : {"video":{"aspectRatio":0.0,"autoPlay":true,"cdn":"cf","customCssClass":"single","customPlayerCssClass":"single","feature":"Single","ffname":"auto","foresterClientId":"ImdbWeb","height":480,"id":"","isReplayable":false,"isResponsive":false,"mature":false,"notifyParentOnVideoPlayCompletion":true,"partyContext":"imdb","playbackMode":"html","playerConfig":{"cssUrl":"http://z-ecx.images-amazon.com/images/G/01/vap/video/airy2//prod/2.0.1175.0/css/imdb._TTW_.css","jsUrl":"http://z-ecx.images-amazon.com/images/G/01/vap/video/airy2//prod/2.0.1175.0/js/airy.ads._TTW_.js","skinUrl":"http://z-ecx.images-amazon.com/images/G/01/vap/video/airy2//prod/2.0.1175.0/skins/imdb._TTW_.js","swfUrl":"http://z-ecx.images-amazon.com/images/G/01/vap/video/airy2//prod/2.0.1175.0/flash/AiryFlashlsRenderer._TTW_.swf"},"replayable":false,"responsive":false,"slate":"https://images-na.ssl-images-amazon.com/images/M/MV5BMTY2OTgwNTczMF5BMl5BanBnXkFtZTgwNDk2OTQxNjE@._V1_.jpg","start":0,"startPlaybackMetricsUrl":"/tr/?pt=video&spt=viconst&ht=pageHit&pat=main&rrid=&const=vi3109793817&res=auto&pid=&mc=VideoPlayerPageModelFactory.createModel.NoAvailableEncodings%3D0.0","viconst":"vi3109793817","videoInfoList":[{"videoMimeType":"application/x-mpegURL","videoUrl":"http://imdb-video.media-imdb.com/vi3109793817/hls-1435811462401-master.m3u8?Expires=1489267144&Signature=a9Id6e-gqpNtXFOsDHXFX3jps0b6yrSNjQkIOMsELJap7~-sPnMyGVotCfWJekHYHMfSSvGXmlJp~aINL-NNb6PkQLi8fyS1E5ReGirDRhACRE16rwe5Hif~wVlZ3Zj0Exbc32uIHWURqInqAmquTt9YbfQogum9-xz2Uj6XVMm8XDj-ikVrdwHKQnwy~UYK-rXluMlOzyiG1z9OxSmhiXftQy0y4HGldpdsk3JRwHC1kozBMziAnvKq~xJU0K4NfQQjK9hmaHcbD78R086ednuCaSpvggD80vcfA8CM6Kq-ZqJh85hqYDEL29Uzm-WApscwkg4n4d56at8ki~xtpw__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA"},{"videoMimeType":"video/mp4","videoUrl":"http://video-http.media-imdb.com/MV5BZjk0YzI1YTYtMzEyMS00ZWEwLTkyZGUtYTExZmY0ZDNhNjcwXkExMV5BbXA0XkFpbWRiLWV0cy10cmFuc2NvZGU@.mp4?Expires=1489267144&Signature=QGuPXCAmfBQPOpHFkHuz2ZrYacKl5PS8pEpcsgoNbqFJAVajI3TZBqJ5Ystorisdinbb3indLC5JuhaS7W096jgRM2sYPJdwkB8dLZsaXUXb2vj2rqc20mfM-CrDYAM9EMTvB2yF5iz2NpvYAG2JJhLvVtslUHApG8dSuCX7mtw_&Key-Pair-Id=APKAILW5I44IHKUN2DYA"}],"width":854}}
+    }
+
+		</script>
+		<script>
+			if (typeof uet == 'function') {
+				uet("cf");
+			}
+		</script>
+		<div class="videoplayer-title-bar vp-full">
+
+			<div class="vp-comments">
+				<div class="vp-comments-icon">
+					<a href="/video/imdb/vi3109793817/?stop=1&ref_=vi_cmt#discuss"
+					   title="Comment on this video" target="_top"></a></div>
+			</div>
+
+			<div class="vp-video-name">
+				Youre Like A Bullet
+				<span id="title-duration" class="duration title-hover">(0:24)</span>
+			</div>
+
+			<div class="vp-related-title">
+				<a href="/title/tt0478970?ref_=vi_tt_t"
+				   target="_top">Ant-Man (2015)</a>
+			</div>
+		</div>
+		<div class="vp-quality">
+			<div class="vp-h4">QUALITY</div>
+			<div>
+				<a href="http://www.imdb.com/video/imdb/vi3109793817/imdb/single?vPage=1&format=SD&token=BCYjINtHzHLvzMcnDqzd_2x0SnYufnh4-QXkR2Bc0uukdqE0A6cCBa-lOtyiqdDDsGV6oRHEeE7i%0D%0A0zRf5aiLHVFGCFtNpep8w6YSFVZTJ9HCPhM%0D%0A&ref_=vi_res_stn"
+				   class="white-link">SD</a>
+			</div>
+			<div>
+				<div class="vp-selected">Auto</div>
+			</div>
+			<div>
+				<a href="http://www.imdb.com/video/imdb/vi3109793817/imdb/single?vPage=1&format=720p&token=BCYjINtHzHLvzMcnDqzd_2x0SnYufnh4-QXkR2Bc0uukdqE0A6cCBa-lOtyiqdDDsGV6oRHEeE7i%0D%0A0zRf5aiLHVFGCFtNpep8w6YSFVZTJ9HCPhM%0D%0A&ref_=vi_res_720p"
+				   class="white-link">720p HD</a>
+			</div>
+		</div>
+		<div class="vp-share">
+
+			<div>
+
+				<a onclick="window.open(&quot;http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0478970%2F%3Fref_%3Dext_shr_fb_vi%23lb-vi3109793817&quot;, 'newWindow', 'width=626,height=436'); return false;"
+				   href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0478970%2F%3Fref_%3Dext_shr_fb_vi%23lb-vi3109793817"
+				   title="Share on Facebook"
+				   class="vp-facebook"
+				   target="_blank"></a>
+			</div>
+
+			<div>
+
+				<a onclick="window.open(&quot;http://twitter.com/intent/tweet?text=Ant-Man%20(2015)%20-%20imdb.com%2Ftitle%2Ftt0478970%2F%3Fref_%3Dext_shr_tw_vi%23lb-vi3109793817&quot;, 'newWindow', 'width=815,height=436'); return false;"
+				   href="http://twitter.com/intent/tweet?text=Ant-Man%20(2015)%20-%20imdb.com%2Ftitle%2Ftt0478970%2F%3Fref_%3Dext_shr_tw_vi%23lb-vi3109793817"
+				   title="Share on Twitter"
+				   class="vp-twitter"
+				   target="_blank"></a>
+			</div>
+
+			<div>
+				<a href="mailto:?subject=Watch%20this%20video%20from%20Ant-Man%20(2015)%20on%20IMDb&body=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0478970%2F%3Fref_%3Dext_shr_eml_vi%23lb-vi3109793817"
+				   title="Share by e-mail"
+				   class="vp-email"></a>
+			</div>
+
+			<div class="vp-embed white-link">Embed</div>
+		</div>
+		<div class="vp-embed-page" style="width:854px; height:480px; display:none;">
+			<div class="vp-embed-frame">
+				<h3>Embed this video on your site</h3>
+				<div class="vp-embed-size">
+					Width:
+					<span class="vp-size" id="vp-sizebtn-480" data-size="480"><span
+							class="vp-sizebtn vp-sizebtn-selected"></span>480px &nbsp;</span>
+					<span class="vp-size" id="vp-sizebtn-640" data-size="640"><span class="vp-sizebtn"></span>640px &nbsp;</span>
+					<span class="vp-size" id="vp-sizebtn-custom" data-size="custom"><span class="vp-sizebtn"></span>Custom</span>
+					<input type="text" value="854" disabled="disabled"/>
+				</div>
+				<div class="vp-label">Copy this code:</div>
+				<textarea class="vp-embed-code" spellcheck=false readonly></textarea>
+				<div class="close-button">
+					<button>Close</button>
+				</div>
+			</div>
+		</div>
+		<div id="imdb-video"></div>
+	</div>
+	<div id="rhs-container">
+		<div id="rhs-body">
+			<div id="poster-container">
+				<div id="poster-body">
+					<a href="/title/tt0478970/?ref_=vi_tt_i"
+					   id="imdbplayer-rhs-poster-link" target="_top"> <img height="176"
+																		   width="122"
+																		   alt="Ant-Man (2015) Poster"
+																		   title="Ant-Man (2015)"
+																		   src="https://images-na.ssl-images-amazon.com/images/M/MV5BMjM2NTQ5Mzc2M15BMl5BanBnXkFtZTgwNTcxMDI2NTE@._V1_UX122_CR0,0,122,176_AL_.jpg"
+																		   itemprop="image"/>
+					</a></div>
+			</div>
+
+			<div id="watchlist-button-container">
+				<div class="add_to_watchlist">
+					<div class="wlb_classic_wrapper">
+                        <span class="wlb_wrapper">
+                            <a class="wlb_watchlist_lite" data-tconst="tt0478970" data-size="medium"
+							   data-caller-name="vi-wl-add" data-type="btn2_play" data-extra="poster"></a>
+                            <input type="hidden" name="49e6c" value="bc92"/>
+                        </span>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>
+
+<script id="imdb-player-ads-data" type="text/imdb-video-player-ads-json">
+            {
+
+                "blank": ""
+                ,"adErrorDetails" : {"adExcluded":true,"monetizableVideo":false}
+            }
+
+</script>
+
+<script type="text/javascript"
+		src="http://ia.media-imdb.com/images/G/01/imdb/js/collections/common-485701321._CB522736548_.js"></script>
+<script type="text/javascript"
+		src="http://ia.media-imdb.com/images/G/01/imdb/js/collections/video-player-widget-2302843310._CB522736161_.js"></script>
+
+
+</body>
+</html>

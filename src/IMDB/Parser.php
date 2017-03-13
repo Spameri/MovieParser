@@ -2,481 +2,178 @@
 
 namespace MovieParser\IMDB;
 
-use MovieParser;
-use GuzzleHttp;
 
 class Parser
 {
 	const STATUS_OK = 200;
 
-	/** @var GuzzleHttp\Client */
+	/**
+	 * @var \GuzzleHttp\Client
+	 */
 	private $client;
-	/** @var UrlBuilder */
+
+	/**
+	 * @var UrlBuilder
+	 */
 	private $urlBuilder;
-	/** @var Matcher */
-	private $matcher;
-	/** @var string */
+
+	/**
+	 * @var string
+	 */
 	private $url;
+
+	/**
+	 * @var \MovieParser\IMDB\Parser\LoadMovie
+	 */
+	private $loadMovie;
+	/** @var \MovieParser\IMDB\Parser\LoadAlternativeVersions */
+	private $loadAlternativeVersions;
+	/** @var \MovieParser\IMDB\Parser\LoadAwards */
+	private $loadAwards;
+	/** @var \MovieParser\IMDB\Parser\LoadBusiness */
+	private $loadBusiness;
+	/** @var \MovieParser\IMDB\Parser\LoadCompanyCredits */
+	private $loadCompanyCredits;
+	/** @var \MovieParser\IMDB\Parser\LoadConnections */
+	private $loadConnections;
+	/** @var \MovieParser\IMDB\Parser\LoadCrazyCredits */
+	private $loadCrazyCredits;
+	/** @var \MovieParser\IMDB\Parser\LoadFullCredits */
+	private $loadFullCredits;
+	/** @var \MovieParser\IMDB\Parser\LoadGoofs */
+	private $loadGoofs;
+	/** @var \MovieParser\IMDB\Parser\LoadKeywords */
+	private $loadKeywords;
+	/** @var \MovieParser\IMDB\Parser\LoadLocations */
+	private $loadLocations;
+	/** @var \MovieParser\IMDB\Parser\LoadMedia */
+	private $loadMedia;
+	/** @var \MovieParser\IMDB\Parser\LoadPlotSummary */
+	private $loadPlotSummary;
+	/** @var \MovieParser\IMDB\Parser\LoadQuotes */
+	private $loadQuotes;
+	/** @var \MovieParser\IMDB\Parser\LoadRatings */
+	private $loadRatings;
+	/** @var \MovieParser\IMDB\Parser\LoadReleaseInfo */
+	private $loadReleaseInfo;
+	/** @var \MovieParser\IMDB\Parser\LoadReviews */
+	private $loadReviews;
+	/** @var \MovieParser\IMDB\Parser\LoadSoundtrack */
+	private $loadSoundtrack;
+	/** @var \MovieParser\IMDB\Parser\LoadSynopsis */
+	private $loadSynopsis;
+	/** @var \MovieParser\IMDB\Parser\LoadTagLines */
+	private $loadTagLines;
+	/** @var \MovieParser\IMDB\Parser\LoadTechnical */
+	private $loadTechnical;
+	/** @var \MovieParser\IMDB\Parser\LoadTrivia */
+	private $loadTrivia;
+	/** @var \MovieParser\IMDB\Parser\LoadVideoGallery */
+	private $loadVideoGallery;
 
 
 	public function __construct(
 		UrlBuilder $urlBuilder
-		, Matcher $matcher
+		, \MovieParser\IMDB\Parser\LoadMovie $loadMovie
+		, \MovieParser\IMDB\Parser\LoadAlternativeVersions $loadAlternativeVersions
+		, \MovieParser\IMDB\Parser\LoadAwards $loadAwards
+		, \MovieParser\IMDB\Parser\LoadBusiness $loadBusiness
+		, \MovieParser\IMDB\Parser\LoadCompanyCredits $loadCompanyCredits
+		, \MovieParser\IMDB\Parser\LoadConnections $loadConnections
+		, \MovieParser\IMDB\Parser\LoadCrazyCredits $loadCrazyCredits
+		, \MovieParser\IMDB\Parser\LoadFullCredits $loadFullCredits
+		, \MovieParser\IMDB\Parser\LoadGoofs $loadGoofs
+		, \MovieParser\IMDB\Parser\LoadKeywords $loadKeywords
+		, \MovieParser\IMDB\Parser\LoadLocations $loadLocations
+		, \MovieParser\IMDB\Parser\LoadMedia $loadMedia
+		, \MovieParser\IMDB\Parser\LoadPlotSummary $loadPlotSummary
+		, \MovieParser\IMDB\Parser\LoadQuotes $loadQuotes
+		, \MovieParser\IMDB\Parser\LoadRatings $loadRatings
+		, \MovieParser\IMDB\Parser\LoadReleaseInfo $loadReleaseInfo
+		, \MovieParser\IMDB\Parser\LoadReviews $loadReviews
+		, \MovieParser\IMDB\Parser\LoadSoundtrack $loadSoundtrack
+		, \MovieParser\IMDB\Parser\LoadSynopsis $loadSynopsis
+		, \MovieParser\IMDB\Parser\LoadTagLines $loadTagLines
+		, \MovieParser\IMDB\Parser\LoadTechnical $loadTechnical
+		, \MovieParser\IMDB\Parser\LoadTrivia $loadTrivia
+		, \MovieParser\IMDB\Parser\LoadVideoGallery $loadVideoGallery
 	) {
+		$this->client = new \GuzzleHttp\Client();
 		$this->urlBuilder = $urlBuilder;
-		$this->matcher = $matcher;
+		$this->loadMovie = $loadMovie;
+		$this->loadAlternativeVersions = $loadAlternativeVersions;
+		$this->loadAwards = $loadAwards;
+		$this->loadBusiness = $loadBusiness;
+		$this->loadCompanyCredits = $loadCompanyCredits;
+		$this->loadConnections = $loadConnections;
+		$this->loadCrazyCredits = $loadCrazyCredits;
+		$this->loadFullCredits = $loadFullCredits;
+		$this->loadGoofs = $loadGoofs;
+		$this->loadKeywords = $loadKeywords;
+		$this->loadLocations = $loadLocations;
+		$this->loadMedia = $loadMedia;
+		$this->loadPlotSummary = $loadPlotSummary;
+		$this->loadQuotes = $loadQuotes;
+		$this->loadRatings = $loadRatings;
+		$this->loadReleaseInfo = $loadReleaseInfo;
+		$this->loadReviews = $loadReviews;
+		$this->loadSoundtrack = $loadSoundtrack;
+		$this->loadSynopsis = $loadSynopsis;
+		$this->loadTagLines = $loadTagLines;
+		$this->loadTechnical = $loadTechnical;
+		$this->loadTrivia = $loadTrivia;
+		$this->loadVideoGallery = $loadVideoGallery;
+	}
+
+	public function get(string $input) : \MovieParser\IMDB\DTO\Movie
+	{
+		$this->setUpUrl($input);
+
+		$movie = $this->loadMovie->load($this->getUrl());
+		$this->loadAlternativeVersions->load($this->getUrl(UrlBuilder::URL_ALTERNATE), $movie);
+		$this->loadAwards->load($this->getUrl(UrlBuilder::URL_AWARDS), $movie);
+		$this->loadBusiness->load($this->getUrl(UrlBuilder::URL_BUSINESS), $movie);
+		$this->loadCompanyCredits->load($this->getUrl(UrlBuilder::URL_COMPANY_CREDITS), $movie);
+		$this->loadConnections->load($this->getUrl(UrlBuilder::URL_MOVIE_CONNECTIONS), $movie);
+		$this->loadCrazyCredits->load($this->getUrl(UrlBuilder::URL_CRAZY_CREDITS), $movie);
+		$this->loadFullCredits->load($this->getUrl(UrlBuilder::URL_FULL_CREDITS), $movie);
+		$this->loadGoofs->load($this->getUrl(UrlBuilder::URL_GOOFS), $movie);
+		$this->loadKeywords->load($this->getUrl(UrlBuilder::URL_KEYWORDS), $movie);
+		$this->loadLocations->load($this->getUrl(UrlBuilder::URL_LOCATIONS), $movie);
+		$this->loadMedia->loadMedia($this->getUrl(UrlBuilder::URL_MEDIA_INDEX), $movie);
+		$this->loadPlotSummary->load($this->getUrl(UrlBuilder::URL_PLOT_SUMMARY), $movie);
+		$this->loadQuotes->load($this->getUrl(UrlBuilder::URL_QUOTES), $movie);
+		$this->loadRatings->load($this->getUrl(UrlBuilder::URL_RATINGS), $movie);
+		$this->loadReleaseInfo->load($this->getUrl(UrlBuilder::URL_RELEASE_INFO), $movie);
+		$this->loadReviews->load($this->getUrl(UrlBuilder::URL_REVIEWS), $movie);
+		$this->loadSoundtrack->load($this->getUrl(UrlBuilder::URL_SOUNDTRACK), $movie);
+		$this->loadSynopsis->load($this->getUrl(UrlBuilder::URL_SYNOPSIS), $movie);
+		$this->loadTagLines->load($this->getUrl(UrlBuilder::URL_TAG_LINE), $movie);
+		$this->loadTechnical->load($this->getUrl(UrlBuilder::URL_TECHNICAL), $movie);
+		$this->loadTrivia->load($this->getUrl(UrlBuilder::URL_TRIVIA), $movie);
+		$this->loadVideoGallery->load($this->getUrl(UrlBuilder::URL_VIDEO_GALLERY), $movie);
+
+		return $movie;
 	}
 
 
-	/**
-	 * @param string $input Input string - id, link or whatever
-	 * @param bool $full load all dependencies?
-	 * @return DTO\*
-	 * @throws Exception\BadResponseException
-	 */
-	public function get($input, $full = FALSE)
+	public function setUpUrl(string $input)
 	{
-		// 1. get client
-		$this->setUpClient();
-
-		// 2. build url
 		$this->url = $this->urlBuilder->buildUrl($input);
-
-		// 3. Get content
-		$content = $this->client->get($this->url);
-		if ($content->getStatusCode() !== self::STATUS_OK) {
-			throw new MovieParser\IMDB\Exception\BadResponseException;
-		}
-
-		// 4. Process content
-		$data = $this->matcher->process($content->getBody()->getContents());
-
-		// 5. Map to entity
-		$entity = $this->createEntity($data);
-
-		if ($full) {
-			// 6. Get Links
-			// 7. foreach links get content
-			// 8. map to entities
-			foreach ($data['links'] as $link) {
-				$this->loadFullCredits($link, $entity);
-				$this->loadReleaseInfo($link, $entity);
-				$this->loadCompanyCredits($link, $entity);
-				$this->loadLocations($link, $entity);
-				$this->loadTechnical($link, $entity);
-				$this->loadTagLines($link, $entity);
-				$this->loadPlotSummary($link, $entity);
-				$this->loadTrivia($link, $entity);
-				$this->loadGoofs($link, $entity);
-				$this->loadCrazyCredits($link, $entity);
-				$this->loadQuotes($link, $entity);
-				$this->loadConnections($link, $entity);
-				$this->loadImages($link, $entity);
-			}
-		}
-
-		// 9. return main entity
-
-		return $entity;
 	}
 
 
-	public function setUpClient()
+	public function getUrl(string $append = '') : string
 	{
-		$this->client = new GuzzleHttp\Client();
+		return $this->url . $append;
 	}
 
 
 	/**
-	 * @param array $data
-	 * @return MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series
+	 * @param string $url
 	 */
-	public function createEntity($data)
+	public function setUrl(string $url)
 	{
-		switch ($data['type']) {
-			case Matcher::TYPE_SERIES:
-				$entity = new MovieParser\IMDB\DTO\Series($data);
-				break;
-
-			case Matcher::TYPE_MOVIE:
-			default:
-				$entity = new MovieParser\IMDB\DTO\Movie($data);
-				break;
-		}
-
-		return $entity;
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadTechnical($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_TECHNICAL)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_TECHNICAL);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processTechnical($content->getBody()->getContents());
-				if (strpos($data['runtime'], 'hr')) {
-					$exploded = explode('min', $data['runtime']);
-					unset($exploded[2]);
-					preg_match("/[0-9]+/", end($exploded), $runtime);
-				} else {
-					preg_match("/[0-9]+/", $data['runtime'], $runtime);
-				}
-				$entity->setRuntime($runtime[0]);
-				$entity->setColor($data['color']);
-				$entity->setRatio($data['ratio']);
-				$entity->setCamera($data['camera']);
-				$entity->setLaboratory($data['laboratory']);
-				$entity->setFilmLength($data['filmLength']);
-				$entity->setNegativeFormat($data['negativeFormat']);
-				$entity->setCineProcess($data['cineProcess']);
-				$entity->setPrinted($data['printed']);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadLocations($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_LOCATIONS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_LOCATIONS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processLocations($content->getBody()->getContents());
-				$entity->setLocations($data['locations']);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 * @throws Exception\IncompleteId
-	 */
-	public function loadCompanyCredits($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_COMPANY_CREDITS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_COMPANY_CREDITS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processCompanyCredits($content->getBody()->getContents());
-				foreach ($data['credits'] as $creditData) {
-					foreach ($creditData['companies'] as $companyData) {
-						$company = new MovieParser\IMDB\DTO\Company([]);
-						$company->setName($companyData['companyName']);
-						$company->setId('co' . $this->urlBuilder->getId($companyData['companyLink']));
-						$credit = new MovieParser\IMDB\DTO\Credit();
-						$credit->setCompany($company);
-						$credit->setNote($companyData['companyNote']);
-						$entity->addCredit($credit);
-					}
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadReleaseInfo($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_RELEASE_INFO)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_RELEASE_INFO);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processReleaseInfo($content->getBody()->getContents());
-				foreach ($data['release'] as $releaseData) {
-					$release = new MovieParser\IMDB\DTO\Release($releaseData);
-					$entity->addRelease($release);
-				}
-				foreach ($data['alias'] as $aliasData) {
-					$alias = new MovieParser\IMDB\DTO\Alias($aliasData);
-					$entity->addAlias($alias);
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadFullCredits($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_FULL_CREDITS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_FULL_CREDITS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processFullCredits($content->getBody()->getContents());
-				foreach ($data['cast'] as $personData) {
-					$role = new MovieParser\IMDB\DTO\Role();
-					$role->setName('Cast');
-					$role->setType('Cast');
-					$role->setDescription($personData['description']);
-
-					if ($personData['person']) {
-						$person = new MovieParser\IMDB\DTO\Person();
-						$person->setId(UrlBuilder::TYPE_PERSON . $this->urlBuilder->getId($personData['person']));
-						$person->setName($personData['person_name']);
-						$role->setPerson($person);
-					}
-
-					if ($personData['character']) {
-						$character = new MovieParser\IMDB\DTO\Character();
-						$character->setId(UrlBuilder::TYPE_CHARACTER . $this->urlBuilder->getId($personData['character']));
-						$character->setName($personData['character_name']);
-						$role->setCharacter($character);
-					}
-
-					if ($personData['alias']) {
-						$alias = new MovieParser\IMDB\DTO\Character();
-						$alias->setId(UrlBuilder::TYPE_CHARACTER . $this->urlBuilder->getId($personData['alias']));
-						$alias->setName($personData['alias_name']);
-						$role->setAlias($alias);
-					}
-
-					$entity->addPerson($role);
-				}
-				foreach ($data['crew'] as $crewData) {
-					foreach ($crewData['people'] as $crewPerson) {
-						if ( ! $crewPerson['person']) {
-							continue;
-						}
-						$role = new MovieParser\IMDB\DTO\Role();
-						$role->setName($crewData['role_name']);
-						$role->setType('Crew');
-						$role->setDescription($crewPerson['description']);
-
-						$person = new MovieParser\IMDB\DTO\Person();
-						$person->setId(UrlBuilder::TYPE_PERSON . $this->urlBuilder->getId($crewPerson['person']));
-						$person->setName($crewPerson['person_name']);
-						$role->setPerson($person);
-
-						$entity->addPerson($role);
-					}
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadTagLines($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_TAG_LINE)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_TAG_LINE);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processTagLines($content->getBody()->getContents());
-				$entity->setTagLines($data['tagLines']);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadPlotSummary($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_PLOT_SUMMARY)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_PLOT_SUMMARY);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processPlotSummary($content->getBody()->getContents());
-				$entity->setPlotSummary($data['plotSummary']);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadSynopsis($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_SYNOPSIS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_SYNOPSIS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processSynopsis($content->getBody()->getContents());
-				$synopsis = '';
-				foreach ($data['synopsis'] as $item) {
-					$synopsis .= str_replace(['(', ')'], '', $item);
-				}
-				$synopsis = str_replace('  ', ' ', $synopsis);
-				$entity->setSynopsis($synopsis);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadKeywords($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_KEYWORDS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_KEYWORDS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processKeywords($content->getBody()->getContents());
-				$entity->setKeyWords($data['keywords']);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadTrivia($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_TRIVIA)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_TRIVIA);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processTrivia($content->getBody()->getContents());
-				$triviaData = [];
-				foreach ($data['trivia'] as $value) {
-					$trivia = new MovieParser\IMDB\DTO\Trivia();
-					$trivia->setId($value['id']);
-					$trivia->setText(implode(' ', $value['text']));
-					$trivia->setVideo($entity->getId());
-					preg_match("/[0-9]+/", $value['relevancy'], $relevancy);
-					$trivia->setRelevancy(reset($relevancy));
-					$triviaData[] = $trivia;
-				}
-				$entity->setTrivia($triviaData);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadGoofs($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_GOOFS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_GOOFS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processGoofs($content->getBody()->getContents());
-				$goofsData = [];
-				foreach ($data['goofs'] as $value) {
-					$goof = new MovieParser\IMDB\DTO\Goof();
-					$goof->setId($value['id']);
-					$goof->setText(implode(' ', $value['text']));
-					$goof->setVideo($entity->getId());
-					preg_match("/[0-9]+/", $value['relevancy'], $relevancy);
-					$goof->setRelevancy(reset($relevancy));
-					$goofsData[] = $goof;
-				}
-				$entity->setGoofs($goofsData);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadCrazyCredits($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_CRAZY_CREDITS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_CRAZY_CREDITS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processCompanyCredits($content->getBody()->getContents());
-				$crazyData = [];
-				foreach ($data['credits'] as $value) {
-					$crazyCredit = new MovieParser\IMDB\DTO\CrazyCredit();
-					$crazyCredit->setId($value['id']);
-					$crazyCredit->setText(implode(' ', $value['text']));
-					$crazyCredit->setVideo($entity->getId());
-					preg_match("/[0-9]+/", $value['relevancy'], $relevancy);
-					$crazyCredit->setRelevancy(reset($relevancy));
-					$crazyData[] = $crazyCredit;
-				}
-				$entity->setCrazyCredits($crazyData);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadQuotes($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_QUOTES)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_QUOTES);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processQuotes($content->getBody()->getContents());
-				$quotesData = [];
-				foreach ($data['quotes'] as $value) {
-					$quote = new MovieParser\IMDB\DTO\Quote();
-					$quote->setId($value['id']);
-					$quote->setText(implode(' ', $value['text']));
-					$quote->setVideo($entity->getId());
-					preg_match("/[0-9]+/", $value['relevancy'], $relevancy);
-					$quote->setRelevancy(reset($relevancy));
-					$quotesData[] = $quote;
-				}
-				$entity->setQuotes($quotesData);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadConnections($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_MOVIE_CONNECTIONS)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_MOVIE_CONNECTIONS);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processConnections($content->getBody()->getContents());
-				$connectionData = [];
-				foreach ($data['connections'] as $value) {
-					$connection = new MovieParser\IMDB\DTO\Connection();
-					$connection->setConnection($value['id']);
-					$connection->setNote(implode(' ', $value['note']));
-					$connection->setType(chop($value['group'], ' '));
-					$connectionData[] = $connection;
-				}
-				$entity->setConnections($connectionData);
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $link
-	 * @param MovieParser\IMDB\DTO\Movie|MovieParser\IMDB\DTO\Series $entity
-	 */
-	public function loadImages($link, $entity)
-	{
-		if (strpos($link, UrlBuilder::URL_MEDIA_INDEX)) {
-			$content = $this->client->get($this->url . '/' . UrlBuilder::URL_MEDIA_INDEX);
-			if ($content->getStatusCode() === self::STATUS_OK) {
-				$data = $this->matcher->processImages($content->getBody()->getContents());
-
-				$entity->setImages($imageData);
-			}
-		}
+		$this->url = $url;
 	}
 }
