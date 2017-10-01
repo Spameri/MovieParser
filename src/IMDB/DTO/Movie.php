@@ -22,15 +22,15 @@ class Movie extends Dto
 	private $show;
 	/** @var int */
 	private $season;
-	/** @var int */
+	/** @var ?int */
 	private $episode;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Person[] */
 	private $people;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Release[] */
 	private $release;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Alias[] */
 	private $alias;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Credit[] */
 	private $credits;
 	/** @var array */
 	private $locations;
@@ -60,17 +60,17 @@ class Movie extends Dto
 	private $synopsis;
 	/** @var array */
 	private $keyWords;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Trivia[] */
 	private $trivia;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Goof[] */
 	private $goofs;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\CrazyCredit[] */
 	private $crazyCredits;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Quote[] */
 	private $quotes;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Connection[] */
 	private $connections;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Image[] */
 	private $images;
 	/** @var array */
 	private $links;
@@ -297,7 +297,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Person[]
 	 */
 	public function getPeople()
 	{
@@ -603,7 +603,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\CrazyCredit[]
 	 */
 	public function getCrazyCredits()
 	{
@@ -639,7 +639,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Connection[]
 	 */
 	public function getConnections()
 	{
@@ -675,7 +675,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Credit[]
 	 */
 	public function getCredits() : array
 	{
@@ -801,18 +801,18 @@ class Movie extends Dto
 
 
 	/**
-	 * @return int
+	 * @return ?int
 	 */
-	public function getEpisode() : int
+	public function getEpisode() : ?int
 	{
 		return $this->episode;
 	}
 
 
 	/**
-	 * @param int $episode
+	 * @param ?int $episode
 	 */
-	public function setEpisode(int $episode)
+	public function setEpisode(?int $episode)
 	{
 		$this->episode = $episode;
 	}
