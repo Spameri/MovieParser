@@ -123,7 +123,7 @@ class LoadMedia
 		preg_match('/rm\d+/', $string, $output);
 
 		if ( ! isset($output[0])) {
-			throw new \MovieParser\IMDB\Exception\IncompleteId;
+			throw new \MovieParser\IMDB\Exception\IncompleteId();
 		}
 
 		return $output[0];
@@ -138,12 +138,12 @@ class LoadMedia
 			$imageData = $this->processImage->process($content->getBody()->getContents());
 
 			$jsonDecode = json_decode($imageData['imageData']);
-			/**
-			 * @var $allImages array
-			 */
-			$allImages = $jsonDecode->mediaViewerModel->allImages;
-			foreach ($allImages as $item) {
-				$data[$item->id] = $item;
+			if ($jsonDecode) {
+				/** @var $allImages array */
+				$allImages = $jsonDecode->mediaViewerModel->allImages;
+				foreach ($allImages as $item) {
+					$data[$item->id] = $item;
+				}
 			}
 		}
 

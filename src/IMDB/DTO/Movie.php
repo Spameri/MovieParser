@@ -60,17 +60,17 @@ class Movie extends Dto
 	private $synopsis;
 	/** @var array */
 	private $keyWords;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Trivia[] */
 	private $trivia;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Goof[] */
 	private $goofs;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\CrazyCredit[] */
 	private $crazyCredits;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Quote[] */
 	private $quotes;
 	/** @var array */
 	private $connections;
-	/** @var array */
+	/** @var \MovieParser\IMDB\DTO\Image[] */
 	private $images;
 	/** @var array */
 	private $links;
@@ -92,7 +92,10 @@ class Movie extends Dto
 
 	public function __construct($data)
 	{
-		if (isset($data['id'])) $this->setId($data['id']);
+		if (isset($data['id'])) {
+			preg_match('/\d+/', $data['id'], $outputId);
+			$this->setId($outputId[0]);
+		}
 		if (isset($data['title'])) $this->setTitle($data['title']);
 		if (isset($data['year'])) $this->setYear((int) $data['year']);
 		if (isset($data['rating'])) $this->setRating((int) str_replace('.', '', $data['rating']));
@@ -102,16 +105,16 @@ class Movie extends Dto
 		if (isset($data['genres'])) $this->setGenres($data['genres']);
 		if (isset($data['links'])) $this->setLinks($data['links']);
 		if (isset($data['show'])) {
-			preg_match('/\d+/', $data['show'], $output);
-			$this->setShow($output[0]);
+			preg_match('/\d+/', $data['show'], $outputShow);
+			$this->setShow($outputShow[0]);
 		}
 		if (isset($data['season'])) {
-			preg_match('/\d+/', $data['season'], $output);
-			$this->setSeason($output[0]);
+			preg_match('/\d+/', $data['season'], $outputSeason);
+			$this->setSeason($outputSeason[0] ?? 0);
 		}
 		if (isset($data['episode'])) {
-			preg_match('/\d+/', $data['episode'], $output);
-			$this->setEpisode($output[0]);
+			preg_match('/\d+/', $data['episode'], $outputEpisode);
+			$this->setEpisode($outputEpisode[0] ?? 0);
 		}
 	}
 
@@ -567,7 +570,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Trivia[]
 	 */
 	public function getTrivia()
 	{
@@ -576,7 +579,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @param array $trivia
+	 * @param \MovieParser\IMDB\DTO\Trivia[] $trivia
 	 */
 	public function setTrivia($trivia)
 	{
@@ -585,7 +588,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Goof[]
 	 */
 	public function getGoofs()
 	{
@@ -603,7 +606,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\CrazyCredit[]
 	 */
 	public function getCrazyCredits()
 	{
@@ -621,7 +624,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Quote[]
 	 */
 	public function getQuotes()
 	{
@@ -630,7 +633,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @param array $quotes
+	 * @param \MovieParser\IMDB\DTO\Quote[] $quotes
 	 */
 	public function setQuotes($quotes)
 	{
@@ -657,7 +660,7 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return \MovieParser\IMDB\DTO\Image[]
 	 */
 	public function getImages()
 	{
@@ -692,12 +695,16 @@ class Movie extends Dto
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function getLinks() : array
+	public function getLinks()
 	{
-		return $this->links;
+		foreach ($this->links as $link) {
+			if (\strpos($link, 'http://www.imdb.com') === 0 ) {
+				yield $link;
+
+			} else {
+				yield 'http://www.imdb.com' . $link;
+			}
+		}
 	}
 
 
@@ -710,100 +717,67 @@ class Movie extends Dto
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function getAlternativeVersions() : array
+	public function getAlternativeVersions() : ?array
 	{
 		return $this->alternativeVersions;
 	}
 
 
-	/**
-	 * @param array $alternativeVersions
-	 */
-	public function setAlternativeVersions(array $alternativeVersions)
+	public function setAlternativeVersions(?array $alternativeVersions)
 	{
 		$this->alternativeVersions = $alternativeVersions;
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function getAwards() : array
+	public function getAwards() : ?array
 	{
 		return $this->awards;
 	}
 
 
-	/**
-	 * @param array $awards
-	 */
-	public function setAwards(array $awards)
+	public function setAwards(?array $awards)
 	{
 		$this->awards = $awards;
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function getVideos() : array
+	public function getVideos() : ?array
 	{
 		return $this->videos;
 	}
 
 
-	/**
-	 * @param array $videos
-	 */
-	public function setVideos(array $videos)
+	public function setVideos(?array $videos)
 	{
 		$this->videos = $videos;
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function getShow() : string
+	public function getShow() : ?string
 	{
 		return $this->show;
 	}
 
 
-	/**
-	 * @param string $show
-	 */
-	public function setShow(string $show)
+	public function setShow(?string $show)
 	{
 		$this->show = $show;
 	}
 
 
-	/**
-	 * @return int
-	 */
-	public function getSeason() : int
+	public function getSeason() : ?int
 	{
 		return $this->season;
 	}
 
 
-	/**
-	 * @param int $season
-	 */
-	public function setSeason(int $season)
+	public function setSeason(?int $season)
 	{
 		$this->season = $season;
 	}
 
 
-	/**
-	 * @return int
-	 */
-	public function getEpisode() : int
+	public function getEpisode() : ?int
 	{
 		return $this->episode;
 	}

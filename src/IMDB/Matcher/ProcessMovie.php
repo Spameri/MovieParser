@@ -10,7 +10,7 @@ class ProcessMovie
 	{
 		$match = \Atrox\Matcher::multi([
 			'id'          => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'title'       => \Atrox\Matcher::single('//h1/text()'),
+			'title'       => \Atrox\Matcher::single('//h1[@itemprop="name"]/text()'),
 			'year'        => \Atrox\Matcher::single('//span[@id="titleYear"]/a/text()'),
 			'rating'      => \Atrox\Matcher::single('//span[@itemprop="ratingValue"]/text()'),
 			'ratingCount' => \Atrox\Matcher::single('//span[@itemprop="ratingCount"]/text()'),

@@ -2,6 +2,7 @@
 
 namespace MovieParser\IMDB\Matcher;
 
+
 class ProcessFullCredits
 {
 	public function process(string $response) : array

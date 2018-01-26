@@ -6,6 +6,11 @@ class LoadMovie
 {
 
 	/**
+	 * @var \GuzzleHttp\Client
+	 */
+	private $client;
+
+	/**
 	 * @var \MovieParser\IMDB\Matcher\ProcessMovie
 	 */
 	private $processMovie;
@@ -20,7 +25,9 @@ class LoadMovie
 	}
 
 
-	public function load(string $link) : \MovieParser\IMDB\DTO\Movie
+	public function load(
+		string $link
+	) : \MovieParser\IMDB\DTO\Movie
 	{
 		$content = $this->client->get($link);
 		$data = $this->processMovie->process($content->getBody()->getContents());

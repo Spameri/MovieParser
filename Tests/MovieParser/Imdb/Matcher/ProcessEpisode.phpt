@@ -15,7 +15,7 @@ class ProcessEpisode extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessMovie(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessMovie();
 
 		$html = file_get_contents(__DIR__ . '/WalkingDead-episode.html');
 
@@ -31,6 +31,20 @@ class ProcessEpisode extends \Tester\TestCase
 		\Tester\Assert::same('/title/tt1520211?ref_=tt_ov_inf', $data['show']);
 		\Tester\Assert::same('Season 7', $data['season']);
 		\Tester\Assert::same('Episode 12', $data['episode']);
+	}
+
+
+	public function testProcessEpisode()
+	{
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessMovie();
+
+		$html = file_get_contents(__DIR__ . '/stargate-episode.html');
+
+		$data = $matcher->process($html);
+
+		\Tester\Assert::same('tt0756405', $data['id']);
+		\Tester\Assert::same('Flesh and Blood ', $data['title']);
+		\Tester\Assert::same('8,5', $data['rating']);
 	}
 }
 

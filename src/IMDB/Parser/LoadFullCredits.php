@@ -60,8 +60,9 @@ class LoadFullCredits
 						$alias->setName($personData['alias_name']);
 						$role->setAlias($alias);
 					}
-
-					$movie->addPerson($role);
+					if ($personData['alias'] || $personData['character'] || $personData['person']) {
+						$movie->addPerson($role);
+					}
 				}
 				foreach ($data['crew'] as $crewData) {
 					foreach ($crewData['people'] as $crewPerson) {
