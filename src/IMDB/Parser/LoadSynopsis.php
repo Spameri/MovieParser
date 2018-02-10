@@ -26,7 +26,7 @@ class LoadSynopsis
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processSynopsis->process($content->getBody()->getContents());
-				$movie->setPlotSummary($data['plotSummary']);
+				$movie->setSynopsis($data['synopsis']);
 			}
 		}
 

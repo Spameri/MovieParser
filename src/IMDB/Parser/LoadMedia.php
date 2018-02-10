@@ -92,8 +92,8 @@ class LoadMedia
 		$imageEntity->setCopyright($imageObject->copyright ?? '');
 		$imageEntity->setSrc($imageObject->src ?? '');
 		$imageEntity->setTitle($imageObject->altText ?? '');
-		$imageEntity->setCharacters($imageObject->relatedCharacters ?? '');
-		$imageEntity->setPeople($imageObject->relatedNames ?? '');
+		$imageEntity->setCharacters($imageObject->relatedCharacters ?? []);
+		$imageEntity->setPeople($imageObject->relatedNames ?? []);
 		$imageEntity->setType($imageType);
 
 		return $imageEntity;
@@ -140,7 +140,7 @@ class LoadMedia
 			$jsonDecode = json_decode($imageData['imageData']);
 			if ($jsonDecode) {
 				/** @var $allImages array */
-				$allImages = $jsonDecode->mediaViewerModel->allImages;
+				$allImages = $jsonDecode->mediaviewer->galleries->{$imageData['id']}->allImages;
 				foreach ($allImages as $item) {
 					$data[$item->id] = $item;
 				}

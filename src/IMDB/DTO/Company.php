@@ -5,14 +5,21 @@ namespace MovieParser\IMDB\DTO;
 
 class Company extends Dto
 {
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $name;
+	/**
+	 * @var string|NULL
+	 */
+	private $note;
 
 
 	public function __construct($data)
 	{
 		if (isset($data['id'])) $this->setId($data['id']);
 		if (isset($data['name'])) $this->setName($data['name']);
+		if (isset($data['note'])) $this->setNote($data['note']);
 	}
 
 
@@ -31,5 +38,17 @@ class Company extends Dto
 	public function setName($name)
 	{
 		$this->name = $name;
+	}
+
+
+	public function getNote() : ?string
+	{
+		return $this->note;
+	}
+
+
+	public function setNote(?string $note)
+	{
+		$this->note = $note;
 	}
 }

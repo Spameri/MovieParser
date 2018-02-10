@@ -10,10 +10,22 @@ class ProcessImage
 	{
 		$match = \Atrox\Matcher::single([
 			'id'        => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'imageData' => \Atrox\Matcher::single('//script[@id="imageJson"]/text()'),
+			'imageData' => \Atrox\Matcher::single('//body/script[1]/text()'),
 		])
 			->fromHtml();
 
-		return $match($response);
+		$data = $match($response);
+
+		$imageData = str_replace([
+			'window.IMDbReactInitialState = window.IMDbReactInitialState || [];',
+			'window.IMDbReactInitialState.push(',
+			');',
+		],
+			'',
+			$data['imageData']
+		);
+		$data['imageData'] = str_replace("'mediaviewer'", '"mediaviewer"', $imageData);
+
+		return $data;
 	}
 }

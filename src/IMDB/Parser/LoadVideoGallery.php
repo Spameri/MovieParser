@@ -42,7 +42,7 @@ class LoadVideoGallery
 			$data = $this->processVideoGallery->process($content->getBody()->getContents());
 
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
-				if (count($data['pages'])) {
+				if (\count($data['pages'])) {
 					foreach ($data['pages'] as $page) {
 						if ($page === 'Next »') {
 							continue;
@@ -57,7 +57,7 @@ class LoadVideoGallery
 				$videos = [];
 
 				foreach ($data['videos'] as $videoLink) {
-					$videos[] = $this->loadVideo->load($videoLink);
+					$videos[] = $this->loadVideo->load('http://www.imdb.com/video/imdb/' . $videoLink);
 				}
 
 				$movie->setVideos($videos);

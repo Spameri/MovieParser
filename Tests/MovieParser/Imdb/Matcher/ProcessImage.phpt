@@ -14,21 +14,21 @@ include __DIR__ . '/../../../../src/IMDB/DTO/Image.php';
 class ProcessImage extends \Tester\TestCase
 {
 
-	public function testProcessMovie()
+	public function testProcessImage()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessImage(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessImage();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-image.html');
 
 		$data = $matcher->process($html);
 
-		$jsonDecode = json_decode($data['imageData']);
+		$imageData = $data['imageData'];
+		$jsonDecode =  \Nette\Utils\Json::decode($imageData);
 
 		\Tester\Assert::same($data['id'], 'tt0478970');
 		\Tester\Assert::type('object', $jsonDecode);
-		\Tester\Assert::count(242, $jsonDecode->mediaViewerModel->allImages);
+		\Tester\Assert::count(260, $jsonDecode->mediaviewer->galleries->{$data['id']}->allImages);
 	}
 }
-
 
 (new ProcessImage())->run();

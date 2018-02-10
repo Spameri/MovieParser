@@ -18,7 +18,7 @@ class ProcessTechnical extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessTechnical(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessTechnical();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-technical.html');
 

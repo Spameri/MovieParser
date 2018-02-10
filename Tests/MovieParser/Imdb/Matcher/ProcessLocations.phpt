@@ -18,7 +18,7 @@ class ProcessLocations extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessLocations(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessLocations();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-location.html');
 

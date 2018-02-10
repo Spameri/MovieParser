@@ -9,16 +9,23 @@ class ProcessVideo
 	public function process(string $response) : array
 	{
 		$match = \Atrox\Matcher::single([
-			'videoObject' => \Atrox\Matcher::single('//iframe[@id="video-player-container"]/@src'),
-			'description' => \Atrox\Matcher::multi('//table[@id="video-details"]/tr', [
-				'title'       => \Atrox\Matcher::single('td/strong/text()'),
-				'description' => \Atrox\Matcher::single('td[2]/span/text()'),
-				'links'       => \Atrox\Matcher::single('td[2]/a/@href'),
-			]),
+			'videoObject' => \Atrox\Matcher::single('//body/script[1]/text()'),
 		])
 			->fromHtml();
 
-		return $match($response);
+		$data = $match($response);
+
+		$videoData = str_replace([
+			'window.IMDbReactInitialState = window.IMDbReactInitialState || [];',
+			'window.IMDbReactInitialState.push(',
+			');',
+		],
+			'',
+			$data['videoObject']
+		);
+		$data['videoObject'] = $videoData;
+
+		return $data;
 	}
 
 

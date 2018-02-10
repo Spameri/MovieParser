@@ -38,10 +38,11 @@ class LoadCompanyCredits
 					foreach ($creditData['companies'] as $companyData) {
 						$company = new \MovieParser\IMDB\DTO\Company([]);
 						$company->setName($companyData['companyName']);
+						$company->setNote($companyData['companyNote']);
 						$company->setId('co' . $this->urlBuilder->getId($companyData['companyLink']));
 						$credit = new \MovieParser\IMDB\DTO\Credit();
 						$credit->setCompany($company);
-						$credit->setNote($companyData['companyNote']);
+						$credit->setGroup($companyData['companyNote']);
 						$movie->addCredit($credit);
 					}
 				}

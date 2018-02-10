@@ -7,10 +7,14 @@ class ProcessSynopsis
 	{
 		$match = \Atrox\Matcher::single([
 			'id'       => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'synopsis' => \Atrox\Matcher::multi('//div[@id="swiki.2.1"]/text()'),
+			'synopsis' => \Atrox\Matcher::multi('//ul[@id="plot-synopsis-content"]/li/text()'),
 		])
 			->fromHtml();
 
-		return $match($response);
+		$data = $match($response);
+
+		$data['synopsis'] = str_replace([' ()', '  ', '	', "\n"], '', implode('', $data['synopsis']));
+
+		return $data;
 	}
 }

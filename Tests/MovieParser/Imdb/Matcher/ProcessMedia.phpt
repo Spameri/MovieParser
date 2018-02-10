@@ -14,7 +14,7 @@ class ProcessMedia extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessMedia(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessMedia();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-media.html');
 

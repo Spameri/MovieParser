@@ -17,14 +17,14 @@ class ProcessKeyWords extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessKeywords(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessKeywords();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-keyWords.html');
 
 		$data = $matcher->process($html);
 
 		\Tester\Assert::same($data['id'], 'tt0478970');
-		\Tester\Assert::count(127, $data['keywords']);
+		\Tester\Assert::count(253, $data['keywords']);
 		\Tester\Assert::same('sabotage', $data['keywords'][0]);
 	}
 }

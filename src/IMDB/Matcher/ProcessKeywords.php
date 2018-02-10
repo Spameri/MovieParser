@@ -10,7 +10,7 @@ class ProcessKeywords
 	{
 		$match = \Atrox\Matcher::single([
 			'id'       => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'keywords' => \Atrox\Matcher::multi('//table[@class="dataTable evenWidthTable2Col"]/tbody/tr/td[1]/div/a/text()'),
+			'keywords' => \Atrox\Matcher::multi('//table[@class="dataTable evenWidthTable2Col"]/tbody/tr/td/div/a/text()'),
 		])
 			->fromHtml();
 

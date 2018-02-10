@@ -2,12 +2,13 @@
 
 namespace MovieParser\IMDB\DTO;
 
+
 class Credit extends Dto
 {
 	/** @var Company */
 	private $company;
 	/** @var string */
-	private $note;
+	private $group;
 
 
 	/**
@@ -31,17 +32,17 @@ class Credit extends Dto
 	/**
 	 * @return string
 	 */
-	public function getNote()
+	public function getGroup()
 	{
-		return $this->note;
+		return $this->group;
 	}
 
 
 	/**
-	 * @param string $note
+	 * @param string $group
 	 */
-	public function setNote($note)
+	public function setGroup($group)
 	{
-		$this->note = $note;
+		$this->group = $group;
 	}
 }

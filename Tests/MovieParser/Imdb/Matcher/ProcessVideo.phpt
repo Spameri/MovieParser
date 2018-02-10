@@ -15,20 +15,29 @@ class ProcessVideo extends \Tester\TestCase
 
 	public function testProcessVideo()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessVideo(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessVideo();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-video.html');
 
 		$data = $matcher->process($html);
 
-		\Tester\Assert::same('http://www.imdb.com/video/imdb/vi3109793817/imdb/single?vPage=1', $data['videoObject']);
-		\Tester\Assert::count(5, $data['description']);
+		\Nette\Utils\Json::decode($data['videoObject']);
+		$videoObject = \Nette\Utils\Json::decode($data['videoObject']);
+
+		\Tester\Assert::same(
+			'https://video-http.media-imdb.com/MV5BMTkzZTQwMTAtYTU1ZC00M2Q2LTgxODMtNDVmNWM4NDhlZGZkXkExMV5BbXA0XkFpbWRiLWV0cy10cmFuc2NvZGU@.mp4?Expires=1517602746&Signature=hgliOhy5PIka3ESQLTHp5bS8ntz3UAkdyZEgEm0CVLio3oMLVZVTYEcaVe3JBYjz0JrfmtWB9Dw~tnJYvDOFzHHrra0bfeZK804nrFzg~UmBfNTBIgfMj3Q-iDSGg0qrgsioKGASRJnrg5lSK4UO~mBOCEPDieHw3fef9kRwYa4_&Key-Pair-Id=APKAILW5I44IHKUN2DYA',
+			$videoObject->videos->videoMetadata->vi3109793817->encodings[0]->videoUrl
+		);
+		\Tester\Assert::same(
+			'Armed with a super-suit with the astonishing ability to shrink in scale but increase in strength, con-man Scott Lang must embrace his inner hero and help his mentor, Dr. Hank Pym, plan and pull off a heist that will save the world.',
+			$videoObject->videos->videoMetadata->vi3109793817->description
+		);
 	}
 
 
 	public function testProcessObject()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessVideo(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessVideo();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-videoObject.html');
 

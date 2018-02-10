@@ -18,13 +18,14 @@ class ProcessSynopsis extends \Tester\TestCase
 
 	public function testProcessMovie()
 	{
-		$matcher = new \MovieParser\IMDB\Matcher\ProcessSynopsis(new \MovieParser\IMDB\UrlBuilder());
+		$matcher = new \MovieParser\IMDB\Matcher\ProcessSynopsis();
 
 		$html = file_get_contents(__DIR__ . '/AntMan-synopsis.html');
 
 		$data = $matcher->process($html);
 
-		\Tester\Assert::count(34, $data['synopsis']);
+		var_dump($data['synopsis']);
+		\Tester\Assert::same(8692, \strlen($data['synopsis']));
 	}
 
 }
