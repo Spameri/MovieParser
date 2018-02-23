@@ -518,7 +518,7 @@ class Movie extends Dto
 	/**
 	 * @return array
 	 */
-	public function getPlotSummary()
+	public function getPlotSummary() : array
 	{
 		return $this->plotSummary;
 	}

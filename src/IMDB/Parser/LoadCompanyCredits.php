@@ -42,7 +42,7 @@ class LoadCompanyCredits
 						$company->setId('co' . $this->urlBuilder->getId($companyData['companyLink']));
 						$credit = new \MovieParser\IMDB\DTO\Credit();
 						$credit->setCompany($company);
-						$credit->setGroup($companyData['companyNote']);
+						$credit->setGroup($creditData['name']);
 						$movie->addCredit($credit);
 					}
 				}

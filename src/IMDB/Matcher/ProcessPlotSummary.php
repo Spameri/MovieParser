@@ -9,7 +9,7 @@ class ProcessPlotSummary
 	{
 		$match = \Atrox\Matcher::single([
 			'id'          => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'plotSummary' => \Atrox\Matcher::multi('//ul[@class="zebraList"]/li/p/text()'),
+			'plotSummary' => \Atrox\Matcher::multi('//ul[@id="plot-summaries-content"]/li/p/text()'),
 		])
 			->fromHtml();
 
