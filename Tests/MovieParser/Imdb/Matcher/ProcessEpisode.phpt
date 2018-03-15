@@ -23,11 +23,11 @@ class ProcessEpisode extends \Tester\TestCase
 
 		\Tester\Assert::same('tt5207756', $data['id']);
 		\Tester\Assert::same('Say Yes ', $data['title']);
-		\Tester\Assert::same('7,5', $data['rating']);
+		\Tester\Assert::same('7,0', $data['rating']);
 		\Tester\Assert::same('https://images-na.ssl-images-amazon.com/images/M/MV5BMGRmNmI2OGYtNjk4ZC00N2ZhLTg3OGItM2UxOGUxMDAxNjFiXkEyXkFqcGdeQXVyNzI2MDU5NTg@._V1_UX182_CR0,0,182,268_AL_.jpg', $data['poster']);
 		\Tester\Assert::count(3, $data['genres']);
-		\Tester\Assert::count(14, $data['links']);
-		\Tester\Assert::same('/title/tt5207756/technical?ref_=tt_ql_dt_7', $data['links'][3]);
+		\Tester\Assert::count(15, $data['links']);
+		\Tester\Assert::same('/title/tt5207756/technical?ref_=tt_ql_dt_6', $data['links'][3]);
 		\Tester\Assert::same('/title/tt1520211?ref_=tt_ov_inf', $data['show']);
 		\Tester\Assert::same('Season 7', $data['season']);
 		\Tester\Assert::same('Episode 12', $data['episode']);

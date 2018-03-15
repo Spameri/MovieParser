@@ -7,6 +7,11 @@ class LoadMedia
 {
 
 	/**
+	 * @var \GuzzleHttp\Client
+	 */
+	public $client;
+
+	/**
 	 * @var \MovieParser\IMDB\Matcher\ProcessMedia
 	 */
 	private $processMedia;
@@ -35,9 +40,12 @@ class LoadMedia
 	}
 
 
-	public function loadMedia(string $link, \MovieParser\IMDB\DTO\Movie $movie) : \MovieParser\IMDB\DTO\Movie
+	public function loadMedia(
+		string $link,
+		\MovieParser\IMDB\DTO\Movie $movie
+	) : \MovieParser\IMDB\DTO\Movie
 	{
-		if (strpos($link, \MovieParser\IMDB\UrlBuilder::URL_MEDIA_INDEX)) {
+		if (\strpos($link, \MovieParser\IMDB\UrlBuilder::URL_MEDIA_INDEX)) {
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processMedia->process($content->getBody()->getContents());
@@ -46,32 +54,46 @@ class LoadMedia
 				$imageEntities = [];
 
 				foreach ($data['mediaTypes'] as $mediaType) {
-					$mediaTypeUrl = rtrim(\MovieParser\IMDB\UrlBuilder::URL_IMDB, '/') . $mediaType;
+					$mediaTypeUrl = \rtrim(\MovieParser\IMDB\UrlBuilder::URL_IMDB, '/') . $mediaType;
 					$mediaContent = $this->client->get($mediaTypeUrl);
 					$mediaData = $this->processMedia->process($mediaContent->getBody()->getContents());
 					$imageType = $this->getImageType($mediaTypeUrl);
 
 					foreach ($mediaData['media'] as $image) {
 						try {
-							$imageEntities[] = $this->createImage($image, $imageData, $imageType);
-						} catch (\Throwable $exception) {
+							$imageId = $this->getImageId($image['link']);
+							$imageEntities[] = $this->createImage($imageId, $imageData, $imageType);
+							unset($imageData[$this->getImageImdbId($image['link'])]);
 
-						}
+						} catch (\Throwable $exception) {}
 					}
 
-					if (count($mediaData['pages'])) {
+					if (\count($mediaData['pages'])) {
 						foreach ($mediaData['pages'] as $page) {
 							$mediaPageContent = $this->client->get($mediaTypeUrl . '&page=' . $page);
 							$mediaPageData = $this->processMedia->process($mediaPageContent->getBody()->getContents());
 							foreach ($mediaPageData['media'] as $image) {
 								try {
-									$imageEntities[] = $this->createImage($image, $imageData, $imageType);
-								} catch (\Throwable $exception) {
+									$imageId = $this->getImageId($image['link']);
+									$imageEntities[] = $this->createImage($imageId, $imageData, $imageType);
+									unset($imageData[$this->getImageImdbId($image['link'])]);
 
-								}
+								} catch (\Throwable $exception) {}
 							}
 						}
 					}
+				}
+
+				foreach ($imageData as $key => $image) {
+					$imageId = $this->getImageId($key);
+					$imageEntities[] = $this->createImage(
+						$imageId,
+						[
+							$imageId => $image
+						],
+						0
+					);
+					unset($imageData[$key]);
 				}
 
 				$movie->setImages($imageEntities);
@@ -82,10 +104,14 @@ class LoadMedia
 	}
 
 
-	public function createImage($image, $imageData, $imageType)
+	public function createImage(
+		int $imageId,
+		array $imageData,
+		int $imageType
+	) : \MovieParser\IMDB\DTO\Image
 	{
 		$imageEntity = new \MovieParser\IMDB\DTO\Image();
-		$imageEntity->setId($this->getImageId($image['link']));
+		$imageEntity->setId($imageId);
 		$imageObject = $imageData[$imageEntity->getId()];
 		$imageEntity->setVideo($imageObject->relatedTitles[0]->constId ?? '');
 		$imageEntity->setAuthor($imageObject->createdBy ?? '');
@@ -118,7 +144,19 @@ class LoadMedia
 	}
 
 
-	public function getImageId(string $string) : string
+	public function getImageId(string $string) : int
+	{
+		preg_match('/\d+/', $string, $output);
+
+		if ( ! isset($output[0])) {
+			throw new \MovieParser\IMDB\Exception\IncompleteId();
+		}
+
+		return (int) $output[0];
+	}
+
+
+	public function getImageImdbId(string $string) : string
 	{
 		preg_match('/rm\d+/', $string, $output);
 

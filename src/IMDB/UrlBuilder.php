@@ -8,55 +8,55 @@ use MovieParser;
 class UrlBuilder
 {
 
-	const URL_IMDB = 'http://www.imdb.com/';
-	const URL_TYPE_TITLE = 'title';
-	const URL_TYPE_VIDEO = 'video/imdb';
-	const URL_TYPE_PERSON = 'name';
-	const URL_TYPE_CHARACTER = 'character';
+	public const URL_IMDB = 'http://www.imdb.com/';
+	public const URL_TYPE_TITLE = 'title';
+	public const URL_TYPE_VIDEO = 'video/imdb';
+	public const URL_TYPE_PERSON = 'name';
+	public const URL_TYPE_CHARACTER = 'character';
 
-	const TYPE_TITLE = 'tt';
-	const TYPE_PERSON = 'nm';
-	const TYPE_CHARACTER = 'ch';
-	const TYPE_VIDEO = 'vi';
+	public const TYPE_TITLE = 'tt';
+	public const TYPE_PERSON = 'nm';
+	public const TYPE_CHARACTER = 'ch';
+	public const TYPE_VIDEO = 'vi';
 
 
-	const URL_FULL_CREDITS = 'fullcredits';
-	const URL_RELEASE_INFO = 'releaseinfo';
-	const URL_EXTERNAL_SITES = 'externalsites';
-	const URL_BUSINESS = 'business';
-	const URL_COMPANY_CREDITS = 'companycredits';
-	const URL_LOCATIONS = 'locations';
-	const URL_TECHNICAL = 'technical';
-	const URL_LITERATURE = 'literature';
+	public const URL_FULL_CREDITS = 'fullcredits';
+	public const URL_RELEASE_INFO = 'releaseinfo';
+	public const URL_EXTERNAL_SITES = 'externalsites';
+	public const URL_BUSINESS = 'business';
+	public const URL_COMPANY_CREDITS = 'companycredits';
+	public const URL_LOCATIONS = 'locations';
+	public const URL_TECHNICAL = 'technical';
+	public const URL_LITERATURE = 'literature';
 
-	const URL_TAG_LINE = 'taglines';
-	const URL_PLOT_SUMMARY = 'plotsummary';
-	const URL_SYNOPSIS = 'synopsis';
-	const URL_KEYWORDS = 'keywords';
-	const URL_PARENTAL = 'parentalguide';
+	public const URL_TAG_LINE = 'taglines';
+	public const URL_PLOT_SUMMARY = 'plotsummary';
+	public const URL_SYNOPSIS = 'synopsis';
+	public const URL_KEYWORDS = 'keywords';
+	public const URL_PARENTAL = 'parentalguide';
 
-	const URL_TRIVIA = 'trivia';
-	const URL_GOOFS = 'goofs';
-	const URL_CRAZY_CREDITS = 'crazycredits';
-	const URL_QUOTES = 'quotes';
-	const URL_ALTERNATE = 'alternateversions';
-	const URL_MOVIE_CONNECTIONS = 'movieconnections';
-	const URL_SOUNDTRACK = 'soundtrack';
+	public const URL_TRIVIA = 'trivia';
+	public const URL_GOOFS = 'goofs';
+	public const URL_CRAZY_CREDITS = 'crazycredits';
+	public const URL_QUOTES = 'quotes';
+	public const URL_ALTERNATE = 'alternateversions';
+	public const URL_MOVIE_CONNECTIONS = 'movieconnections';
+	public const URL_SOUNDTRACK = 'soundtrack';
 
-	const URL_MEDIA_INDEX = 'mediaindex';
-	const URL_MEDIA_VIEWER = 'mediaviewer';
-	const URL_VIDEO_GALLERY = 'videogallery';
-	const URL_VIDEO = 'video';
+	public const URL_MEDIA_INDEX = 'mediaindex';
+	public const URL_MEDIA_VIEWER = 'mediaviewer';
+	public const URL_VIDEO_GALLERY = 'videogallery';
+	public const URL_VIDEO = 'video';
 
-	const URL_AWARDS = 'awards';
-	const URL_FAQ = 'faq';
-	const URL_REVIEWS = 'reviews';
-	const URL_RATINGS = 'ratings';
-	const URL_EXTERNAL_REVIEWS = 'externalreviews';
+	public const URL_AWARDS = 'awards';
+	public const URL_FAQ = 'faq';
+	public const URL_REVIEWS = 'reviews';
+	public const URL_RATINGS = 'ratings';
+	public const URL_EXTERNAL_REVIEWS = 'externalreviews';
 
-	const URL_TV_SCHEDULE = 'tvschedule';
+	public const URL_TV_SCHEDULE = 'tvschedule';
 
-	const IMDB_URLS = [
+	public const IMDB_URLS = [
 		self::URL_FULL_CREDITS,
 		self::URL_RELEASE_INFO,
 		self::URL_EXTERNAL_SITES,
