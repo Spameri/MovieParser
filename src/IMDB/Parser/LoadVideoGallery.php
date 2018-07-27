@@ -56,11 +56,13 @@ class LoadVideoGallery
 				}
 				$videos = [];
 
-				foreach ($data['videos'] as $videoLink) {
-					$videos[] = $this->loadVideo->load('http://www.imdb.com/video/imdb/' . $videoLink);
-				}
+				try {
+					foreach ($data['videos'] as $videoLink) {
+						$videos[] = $this->loadVideo->load('http://www.imdb.com/video/imdb/' . $videoLink);
+					}
 
-				$movie->setVideos($videos);
+					$movie->setVideos($videos);
+				} catch (\Nette\Utils\JsonException $exception) {}
 			}
 		}
 

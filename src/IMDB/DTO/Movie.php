@@ -516,16 +516,16 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return ?array
 	 */
-	public function getPlotSummary() : array
+	public function getPlotSummary() : ?array
 	{
 		return $this->plotSummary;
 	}
 
 
 	/**
-	 * @param array $plotSummary
+	 * @param ?array $plotSummary
 	 */
 	public function setPlotSummary($plotSummary)
 	{
@@ -678,18 +678,18 @@ class Movie extends Dto
 
 
 	/**
-	 * @return array
+	 * @return ?array
 	 */
-	public function getCredits() : array
+	public function getCredits() : ?array
 	{
 		return $this->credits;
 	}
 
 
 	/**
-	 * @param array $credits
+	 * @param ?array $credits
 	 */
-	public function setCredits(array $credits)
+	public function setCredits(?array $credits)
 	{
 		$this->credits = $credits;
 	}

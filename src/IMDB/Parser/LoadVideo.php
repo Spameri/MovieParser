@@ -21,6 +21,9 @@ class LoadVideo
 	}
 
 
+	/**
+	 * @throws \Nette\Utils\JsonException
+	 */
 	public function load(string $link) : array
 	{
 		$data = [];

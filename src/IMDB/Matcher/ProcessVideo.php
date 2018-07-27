@@ -9,7 +9,7 @@ class ProcessVideo
 	public function process(string $response) : array
 	{
 		$match = \Atrox\Matcher::single([
-			'videoObject' => \Atrox\Matcher::single('//body/script[1]/text()'),
+			'videoObject' => \Atrox\Matcher::single('//body/script[2]/text()'),
 		])
 			->fromHtml();
 
