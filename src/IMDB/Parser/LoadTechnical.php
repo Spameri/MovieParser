@@ -34,7 +34,7 @@ class LoadTechnical
 				} else {
 					preg_match('/\d+/', $data['runtime'], $runtime);
 				}
-				$movie->setRuntime($runtime[0]);
+				$movie->setRuntime($runtime[0] ?? 1);
 				$movie->setColor($data['color']);
 				$movie->setRatio($data['ratio']);
 				$movie->setCamera($data['camera']);
