@@ -27,6 +27,10 @@ class LoadTrivia
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processTrivia->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$triviaData = [];
 				foreach ($data['trivia'] as $value) {
 					$trivia = new \MovieParser\IMDB\DTO\Trivia();

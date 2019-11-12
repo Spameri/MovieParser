@@ -8,8 +8,10 @@ class ProcessPlotSummary
 	public function process(string $response) : array
 	{
 		$match = \Atrox\Matcher::single([
-			'id'          => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'plotSummary' => \Atrox\Matcher::multi('//ul[@id="plot-summaries-content"]/li/p/text()'),
+			'id'          	=> \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
+			'plots' 		=> \Atrox\Matcher::multi('//ul[@id="plot-summaries-content"]/li', [
+				'plotSummary' => \Atrox\Matcher::multi('./p//text()'),
+			]),
 		])
 			->fromHtml();
 

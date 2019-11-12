@@ -27,6 +27,11 @@ class LoadReleaseInfo
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processReleaseInfo->process($content->getBody()->getContents());
+				\Tracy\Debugger::barDump($data);
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				foreach ($data['release'] as $releaseData) {
 					$release = new \MovieParser\IMDB\DTO\Release($releaseData);
 					$movie->addRelease($release);

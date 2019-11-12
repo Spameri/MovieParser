@@ -27,6 +27,9 @@ class LoadAwards
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processAwards->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
 
 				$movie->setAwards($data['awards']);
 			}

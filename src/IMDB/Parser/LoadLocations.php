@@ -27,6 +27,10 @@ class LoadLocations
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processLocations->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$movie->setLocations($data['locations']);
 			}
 		}

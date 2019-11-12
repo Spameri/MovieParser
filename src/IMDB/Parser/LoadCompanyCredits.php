@@ -34,6 +34,10 @@ class LoadCompanyCredits
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processCompanyCredits->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				foreach ($data['credits'] as $creditData) {
 					foreach ($creditData['companies'] as $companyData) {
 						$company = new \MovieParser\IMDB\DTO\Company([]);

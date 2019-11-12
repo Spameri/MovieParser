@@ -29,6 +29,10 @@ class LoadConnections
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processConnections->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$connectionData = [];
 				foreach ($data['connections'] as $value) {
 					$connection = new \MovieParser\IMDB\DTO\Connection();

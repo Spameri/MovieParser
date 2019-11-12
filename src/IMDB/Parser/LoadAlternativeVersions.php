@@ -26,6 +26,9 @@ class LoadAlternativeVersions
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processAlternativeVersions->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
 
 				$movie->setAlternativeVersions($data['alternate']);
 			}

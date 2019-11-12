@@ -27,6 +27,10 @@ class LoadQuotes
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processQuotes->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$quotesData = [];
 				foreach ($data['quotes'] as $value) {
 					$quote = new \MovieParser\IMDB\DTO\Quote();

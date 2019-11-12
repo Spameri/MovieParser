@@ -49,6 +49,11 @@ class LoadMedia
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processMedia->process($content->getBody()->getContents());
+				\Tracy\Debugger::barDump($data);
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$baseUrl = $this->urlBuilder->buildUrl($link);
 				$imageData = $this->loadImageData($baseUrl . \MovieParser\IMDB\UrlBuilder::URL_MEDIA_VIEWER);
 				$imageEntities = [];

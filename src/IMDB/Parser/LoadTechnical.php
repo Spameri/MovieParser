@@ -27,6 +27,10 @@ class LoadTechnical
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processTechnical->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				if (strpos($data['runtime'], 'hr')) {
 					$exploded = explode('min', $data['runtime']);
 					unset($exploded[2]);

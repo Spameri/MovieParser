@@ -40,6 +40,9 @@ class LoadVideoGallery
 			$baseUrl = $this->urlBuilder->buildUrl($link);
 			$content = $this->client->get($link);
 			$data = $this->processVideoGallery->process($content->getBody()->getContents());
+			if ( ! $movie->getId()) {
+				$movie->setId(\str_replace('tt', '', $data['id']));
+			}
 
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				if (\count($data['pages'])) {

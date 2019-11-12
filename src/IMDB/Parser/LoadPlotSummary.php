@@ -26,7 +26,15 @@ class LoadPlotSummary
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processPlotSummary->process($content->getBody()->getContents());
-				$movie->setPlotSummary($data['plotSummary']);
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
+				$summaryData = [];
+				foreach ($data['plots'] as $summary) {
+					$summaryData[] = \implode(' ', $summary['plotSummary']);
+				}
+				$movie->setPlotSummary($summaryData);
 			}
 		}
 

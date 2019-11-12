@@ -26,6 +26,10 @@ class LoadGoofs
 			$content = $this->client->get($link);
 			if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
 				$data = $this->processGoofs->process($content->getBody()->getContents());
+				if ( ! $movie->getId()) {
+					$movie->setId(\str_replace('tt', '', $data['id']));
+				}
+
 				$goofsData = [];
 				foreach ($data['goofs'] as $value) {
 					$goof = new \MovieParser\IMDB\DTO\Goof();
