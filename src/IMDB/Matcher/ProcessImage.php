@@ -10,7 +10,7 @@ class ProcessImage
 	{
 		$match = \Atrox\Matcher::single([
 			'id'        => \Atrox\Matcher::single('//meta[@property="pageId"]/@content'),
-			'imageData' => \Atrox\Matcher::single('//head/script[17]/text()'),
+			'imageData' => \Atrox\Matcher::single('//script[@id="__NEXT_DATA__"]/text()'),
 		])
 			->fromHtml();
 

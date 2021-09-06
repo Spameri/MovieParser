@@ -10,16 +10,16 @@ class MovieParserExtension extends \Nette\DI\CompilerExtension
 	{
 		parent::loadConfiguration();
 
-		$builder = $this->getContainerBuilder();
+		$services = $this->loadFromFile(__DIR__ . '/config.neon');
 
-		$this->compiler->parseServices($builder, $this->loadFromFile(__DIR__ . '/config.neon'), $this->name);
+		$aliasedServices = [];
+		foreach ($services['services'] as $key => $service) {
+			$aliasedServices['movieParser.' . $key] = $service;
+		}
+
+		$this->compiler->loadDefinitionsFromConfig(
+			$aliasedServices
+		);
 	}
 
-
-	public static function register(\Nette\Configurator $configurator)
-	{
-		$configurator->onCompile[] = function ($config, \Nette\DI\Compiler $compiler) {
-			$compiler->addExtension('movieParser', new MovieParserExtension());
-		};
-	}
 }

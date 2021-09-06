@@ -9,6 +9,7 @@ class UrlBuilder
 {
 
 	public const URL_IMDB = 'http://www.imdb.com/';
+	public const URL_IMDB_NO_BACKLASH = 'http://www.imdb.com';
 	public const URL_TYPE_TITLE = 'title';
 	public const URL_TYPE_VIDEO = 'video/imdb';
 	public const URL_TYPE_PERSON = 'name';

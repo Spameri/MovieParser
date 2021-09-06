@@ -21,11 +21,6 @@ class LoadMedia
 	 */
 	private $processImage;
 
-	/**
-	 * @var \MovieParser\IMDB\UrlBuilder
-	 */
-	private $urlBuilder;
-
 
 	public function __construct(
 		\MovieParser\IMDB\UrlBuilder $urlBuilder
@@ -33,7 +28,6 @@ class LoadMedia
 		, \MovieParser\IMDB\Matcher\ProcessImage $processImage
 	)
 	{
-		$this->urlBuilder = $urlBuilder;
 		$this->processMedia = $processMedia;
 		$this->processImage = $processImage;
 		$this->client = new \GuzzleHttp\Client();
@@ -54,54 +48,19 @@ class LoadMedia
 					$movie->setId(\str_replace('tt', '', $data['id']));
 				}
 
-				$baseUrl = $this->urlBuilder->buildUrl($link);
-				$imageData = $this->loadImageData($baseUrl . \MovieParser\IMDB\UrlBuilder::URL_MEDIA_VIEWER);
-				$imageEntities = [];
-
 				foreach ($data['mediaTypes'] as $mediaType) {
-					$mediaTypeUrl = \rtrim(\MovieParser\IMDB\UrlBuilder::URL_IMDB, '/') . $mediaType;
+					$mediaTypeUrl = \MovieParser\IMDB\UrlBuilder::URL_IMDB_NO_BACKLASH . $mediaType;
 					$mediaContent = $this->client->get($mediaTypeUrl);
 					$mediaData = $this->processMedia->process($mediaContent->getBody()->getContents());
 					$imageType = $this->getImageType($mediaTypeUrl);
 
-					foreach ($mediaData['media'] as $image) {
-						try {
-							$imageId = $this->getImageId($image['link']);
-							$imageEntities[] = $this->createImage($imageId, $imageData, $imageType);
-							unset($imageData[$this->getImageImdbId($image['link'])]);
-
-						} catch (\Throwable $exception) {}
-					}
-
-					if (\count($mediaData['pages'])) {
-						foreach ($mediaData['pages'] as $page) {
-							$mediaPageContent = $this->client->get($mediaTypeUrl . '&page=' . $page);
-							$mediaPageData = $this->processMedia->process($mediaPageContent->getBody()->getContents());
-							foreach ($mediaPageData['media'] as $image) {
-								try {
-									$imageId = $this->getImageId($image['link']);
-									$imageEntities[] = $this->createImage($imageId, $imageData, $imageType);
-									unset($imageData[$this->getImageImdbId($image['link'])]);
-
-								} catch (\Throwable $exception) {}
-							}
-						}
+//					$mediaData['pages'][-1] = '1';
+					$mediaData['pages'] = [-1 => '1'];
+					ksort($mediaData['pages']);
+					foreach ($mediaData['pages'] as $page) {
+						$this->loadPage($movie, $mediaType, $page, $imageType);
 					}
 				}
-
-				foreach ($imageData as $key => $image) {
-					$imageId = $this->getImageId($key);
-					$imageEntities[] = $this->createImage(
-						$imageId,
-						[
-							$imageId => $image
-						],
-						0
-					);
-					unset($imageData[$key]);
-				}
-
-				$movie->setImages($imageEntities);
 			}
 		}
 
@@ -109,23 +68,54 @@ class LoadMedia
 	}
 
 
+	public function loadPage(
+		\MovieParser\IMDB\DTO\Movie $movie,
+		string $mediaTypeUrl,
+		int $page,
+		int $imageType
+	): void
+	{
+		$mediaPageContent = $this->client->get(\MovieParser\IMDB\UrlBuilder::URL_IMDB_NO_BACKLASH . $mediaTypeUrl . '&page=' . $page);
+		$mediaPageData = $this->processMedia->process($mediaPageContent->getBody()->getContents());
+		foreach ($mediaPageData['media'] as $image) {
+			try {
+				$imageId = $this->getImageId($image['link']);
+				$imageData = $this->loadImageData(\MovieParser\IMDB\UrlBuilder::URL_IMDB_NO_BACKLASH . $image['link']);
+				$movie->addImage($this->createImage($imageId, $imageData, $imageType));
+
+			} catch (\Throwable $exception) {}
+		}
+	}
+
+
 	public function createImage(
 		int $imageId,
-		array $imageData,
+		\stdClass $imageObject,
 		int $imageType
 	) : \MovieParser\IMDB\DTO\Image
 	{
 		$imageEntity = new \MovieParser\IMDB\DTO\Image();
 		$imageEntity->setId($imageId);
-		$imageObject = $imageData[$imageEntity->getId()];
-		$imageEntity->setVideo($imageObject->relatedTitles[0]->constId ?? '');
+		$imageEntity->setVideo($imageObject->titles[0]->id ?? '');
 		$imageEntity->setAuthor($imageObject->createdBy ?? '');
 		$imageEntity->setCopyright($imageObject->copyright ?? '');
-		$imageEntity->setSrc($imageObject->src ?? '');
-		$imageEntity->setTitle($imageObject->altText ?? '');
-		$imageEntity->setCharacters($imageObject->relatedCharacters ?? []);
-		$imageEntity->setPeople($imageObject->relatedNames ?? []);
+		$imageEntity->setSrc($imageObject->url ?? '');
+		$imageEntity->setTitle($imageObject->caption->plainText ?? '');
 		$imageEntity->setType($imageType);
+
+
+		$characters = [];
+		$people = [];
+		foreach ($imageObject->names as $name) {
+			if ($name->__typename === 'Name') {
+				$people[] = $name;
+			} else {
+				\Tracy\Debugger::barDump($name);
+			}
+		}
+
+		$imageEntity->setCharacters($characters);
+		$imageEntity->setPeople($people);
 
 		return $imageEntity;
 	}
@@ -173,23 +163,30 @@ class LoadMedia
 	}
 
 
-	public function loadImageData(string $link) : array
+	/**
+	 * @throws \MovieParser\IMDB\Exception\BadResponseException
+	 * @throws \Nette\Utils\JsonException
+	 */
+	public function loadImageData(string $link) : \stdClass
 	{
-		$data = [];
 		$content = $this->client->get($link);
-		if ($content->getStatusCode() === \MovieParser\IMDB\Parser::STATUS_OK) {
-			$imageData = $this->processImage->process($content->getBody()->getContents());
-
-			$jsonDecode = json_decode($imageData['imageData']);
-			if ($jsonDecode) {
-				/** @var $allImages array */
-				$allImages = $jsonDecode->mediaviewer->galleries->{$imageData['id']}->allImages;
-				foreach ($allImages as $item) {
-					$data[$item->id] = $item;
-				}
-			}
+		if ($content->getStatusCode() !== \MovieParser\IMDB\Parser::STATUS_OK) {
+			throw new \MovieParser\IMDB\Exception\BadResponseException('Image for link ' . $link . ' was not downloaded.');
 		}
 
-		return $data;
+		$imageData = $this->processImage->process($content->getBody()->getContents());
+
+		$jsonDecode = \Nette\Utils\Json::decode($imageData['imageData']);
+		$first = \reset($jsonDecode->props->urqlState);
+
+		if (isset($first->data->name->images->edges[0]->node)) {
+			return $first->data->name->images->edges[0]->node;
+		}
+
+		if (isset($first->data->title->images->edges[0]->node)) {
+			return $first->data->title->images->edges[0]->node;
+		}
+
+		throw new \MovieParser\IMDB\Exception\BadResponseException('Malformed image data.');
 	}
 }

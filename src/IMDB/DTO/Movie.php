@@ -677,6 +677,12 @@ class Movie extends Dto
 	}
 
 
+	public function addImage(Image $image): void
+	{
+		$this->images[] = $image;
+	}
+
+
 	/**
 	 * @return ?array
 	 */
